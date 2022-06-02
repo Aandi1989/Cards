@@ -1,0 +1,70 @@
+.main{
+    background: linear-gradient( rgb(230,212,222), rgb(25,118,210));
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+}
+.container{
+    width: 400px;
+    height: 550px;
+    background:white;
+    border-radius: 3%;
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+}
+.container__header{
+    font-size: 25px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.container__title{
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom:30px ;
+}
+.container__emailField,.container__passwordField,.container__confirmPasswordField{
+    margin-bottom: 20px;
+}
+.container__passwordInfo__title{
+    font-weight: 400;
+    color:grey;
+    font-size: 15px;
+    margin-top: 15px;
+}
+.container__passwordInfo__item{
+    color: grey;
+    font-size: 13px;
+}
+.container__buttons{
+    display: flex;
+    margin-top: auto;
+    justify-content: space-around;
+}
+.container__buttons__cancelBox,.container__buttons__signUpBox{
+    text-decoration: none;
+}
+.cancelBotton{
+color: rgb(33,38,143);    
+background-color:rgb(225,210,222);
+width: 100px;
+height: 40px;
+margin: 0 auto;
+padding: 9px 20px;
+border-radius: 30px;
+}
+.signUpBotton{
+color: white;    
+background-color:rgb(33,38,143);
+width: 180px;
+height: 40px;
+margin: 0 auto;
+padding: 9px 59px;
+border-radius: 30px;
+}
+
+
