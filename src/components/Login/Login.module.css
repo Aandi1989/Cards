@@ -28,10 +28,10 @@
     margin-bottom:30px ;
 }
 .container__emailField{
-    margin-bottom: 25px;
+    margin-bottom: 5px;
 }
 .container__passwordField{
-    margin-bottom: 25px;
+    margin-bottom: 5px;
 }
 .container__rememberMeField{
     margin-bottom: 20px;
@@ -42,24 +42,21 @@
     font-size: 12px;
     margin-bottom:25px ;
 }
-.container__signInBox{
-    text-decoration: none;
-    margin-bottom: 30px;
-}
 .signInBotton{
-color: white;    
-background-color:rgb(33,38,143);
-width: 200px;
-height: 40px;
-margin: 0 auto;
-padding: 9px 73px;
-border-radius: 30px;
-}
+    color: white;    
+    background-color:rgb(33,38,143);
+    width: 200px;
+    height: 40px;
+    font-size: 16px;
+    margin:0 auto 30px ;
+    padding: 9px 73px;
+    border-radius: 30px;
+    border:none;
+    }
 .container__haveAccount{
     color: grey;
     font-size: 12px;
     text-align: center;
-    /* margin-bottom: 10px; */
 }
 .container__signUpLink{
     text-decoration: none;
@@ -67,4 +64,8 @@ border-radius: 30px;
     font-weight: 600;
     font-size:18px;
     text-align: center;
+}
+.errorBox{
+    min-height: 22px;
+    color:red;
 }

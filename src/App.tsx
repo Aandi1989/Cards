@@ -31,11 +31,11 @@ function App() {
     <div className="App">
       <Routes>
         <Route path='/' element={<Profile/>} />
-        <Route path='login' element={<Login/>} />
-        <Route path='register' element={<Register/>} />
-        <Route path='forgotPassword' element={<ForgotPassword/>} />
-        <Route path='checkEmail' element={<CheckEmail/>} />
-        <Route path='createPassword' element={<CreatePassword/>} />
+        <Route path='/login' element={<Login/>} />
+        <Route path='/register' element={<Register/>} />
+        <Route path='/forgotPassword' element={<ForgotPassword/>} />
+        <Route path='/checkEmail' element={<CheckEmail/>} />
+        <Route path='/createPassword' element={<CreatePassword/>} />
       </Routes>
     </div>
   );

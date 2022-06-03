@@ -51,7 +51,8 @@ export const loginTC=(data:LoginDataType)=>(dispatch:Dispatch<ActionsType>)=>{
     dispatch(setAppStatusAC('loading'))
     authAPI.login(data)
     .then(res=>{
-        if(res.status){
+        console.log(res)
+        if(res.status==200){
             dispatch(setIsLoggedInAC(true))
             dispatch(setAppStatusAC('succeeded'))
         }else{
@@ -68,8 +69,8 @@ export const logoutTC=()=>(dispatch:Dispatch<ActionsType>)=>{
     dispatch(setAppStatusAC('loading'))
     authAPI.logout()
     .then(res=>{
-        if(!res.data.error){
-            dispatch(setIsInitializedAC(false))
+        console.log(res)
+        if(res.status==200){
              dispatch(setIsLoggedInAC(false))
              dispatch(setAppStatusAC('succeeded'))
         }else{
