@@ -11,7 +11,6 @@ export const authAPI={
     },
     login(data:LoginDataType){
         return instance.post<LoginDataType,AxiosResponse<UserType>>(`auth/login`,data)
-        // return instance.post(`auth/login`,data)
     },
     logout(){
         return instance.delete<LogoutType>(`auth/me`)
@@ -25,11 +24,8 @@ export type LoginDataType={
     rememberMe:boolean
 }
 export type LogoutType={
-    statusText:string
-    status:number
-    data:{
-        info:string
-    }
+    info:string
+    error?:string
 }
 export type UserType={
         avatar?: string
@@ -44,43 +40,3 @@ export type UserType={
         updated: string
         verified: boolean
     }
-
-export type authType={
-    statusText:string
-    status:number
-    data:{
-        avatar: string
-        created:string
-        email: string
-        isAdmin: boolean
-        name: string
-        publicCardPacksCount: number
-        rememberMe: boolean
-        token: string
-        tokenDeathTime: number
-        updated: string
-        verified: boolean
-    }
-}
-
-export type LoginType={
-    statusText:string
-    status:number
-    data:{
-        created:string
-        email: string
-        isAdmin: boolean
-        name: string
-        publicCardPacksCount: number
-        rememberMe: boolean
-        token: string
-        tokenDeathTime: number
-        updated: string
-        verified: boolean   
-    }
-}
-
-
-// instance.post('auth/login', { email: "aliaksandr.novik2021@gmail.com", password: "vemeli16", rememberMe: true }).then(res => { console.log(res) })
-// instance.post('auth/me').then(res => { console.log(res) })
-// instance.delete('auth/me').then(res => { console.log(res) })

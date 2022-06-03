@@ -3,15 +3,27 @@ import { Checkbox, FormControlLabel, TextField, Typography } from "@mui/material
 import { Link } from "react-router-dom";
 import classes from './Profile.module.css';
 import { authAPI, LoginDataType } from "../../api/cards-api";
+import { useDispatch, useSelector } from "react-redux";
+import { authTC, InitialAuthStateType } from "../../Store/auth-reducer";
+import { AppRootStateType,useAppDispatch } from "../../Store/store";
+import { InitialAppStateType } from "../../Store/app-reducer";
 
-const data:LoginDataType={ email: "aliaksandr.novik2021@gmail.com", password: "vemeli16", rememberMe: true }
+const data:LoginDataType={ email: "cards@test.com", password: "Qwertyuiop123", rememberMe: true }
 
 export const Profile = () => {
 
+    const dispatch=useAppDispatch()
+    const auth=useSelector<AppRootStateType,InitialAuthStateType>(state=>state.auth)
+    const app=useSelector<AppRootStateType,InitialAppStateType>(state=>state.app)
+
+    
+    console.log(auth, app)
     useEffect(()=>{
-        // authAPI.me().then(response=>{console.log(response.data.name)})
+        dispatch(authTC())
+
+        // authAPI.me().then(response=>{console.log(response)})
             // authAPI.logout().then(res=>console.log(res))
-        authAPI.login(data).then(res=>console.log(res.data.name))
+        // authAPI.login(data).then(res=>console.log(res.data.name))
     },[])
 
     return (
