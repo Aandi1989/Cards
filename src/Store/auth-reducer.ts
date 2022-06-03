@@ -69,7 +69,6 @@ export const logoutTC=()=>(dispatch:Dispatch<ActionsType>)=>{
     dispatch(setAppStatusAC('loading'))
     authAPI.logout()
     .then(res=>{
-        console.log(res)
         if(res.status==200){
              dispatch(setIsLoggedInAC(false))
              dispatch(setAppStatusAC('succeeded'))
