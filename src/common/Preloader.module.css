@@ -1,0 +1,8 @@
+.main{
+    background: linear-gradient( rgb(230,212,222), rgb(25,118,210));
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+}

@@ -1,5 +1,5 @@
 import { Dispatch } from "redux"
-import { authAPI } from "../api/cards-api"
+import { authAPI, LoginDataType } from "../api/cards-api"
 import { SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType, setAppErrorAC } from "./app-reducer"
 
 export type InitialAuthStateType = {
@@ -34,14 +34,54 @@ export const authTC=()=>(dispatch:Dispatch<ActionsType>)=>{
              dispatch(setIsLoggedInAC(true))
              dispatch(setAppStatusAC('succeeded'))
          } else{
+             
              dispatch(setAppErrorAC('Some server error occurred'))
              dispatch(setAppStatusAC('failed'))
          }
      })
+     .catch((error)=>{
+         if(error.response.status==401){
+            dispatch(setIsInitializedAC(true))
+         }
+        dispatch(setAppErrorAC(error.message ? error.message : 'Some network error occurred'))
+        dispatch(setAppStatusAC('failed'))
+     })
 }
-
-
-
+export const loginTC=(data:LoginDataType)=>(dispatch:Dispatch<ActionsType>)=>{
+    dispatch(setAppStatusAC('loading'))
+    authAPI.login(data)
+    .then(res=>{
+        if(res.status){
+            dispatch(setIsLoggedInAC(true))
+            dispatch(setAppStatusAC('succeeded'))
+        }else{
+            dispatch(setAppErrorAC('Some server error occurred'))
+            dispatch(setAppStatusAC('failed'))
+        }
+    })
+    .catch((error)=>{
+        dispatch(setAppErrorAC(error.message ? error.message : 'Some network error occurred'))
+        dispatch(setAppStatusAC('failed'))
+    })
+}
+export const logoutTC=()=>(dispatch:Dispatch<ActionsType>)=>{
+    dispatch(setAppStatusAC('loading'))
+    authAPI.logout()
+    .then(res=>{
+        if(!res.data.error){
+            dispatch(setIsInitializedAC(false))
+             dispatch(setIsLoggedInAC(false))
+             dispatch(setAppStatusAC('succeeded'))
+        }else{
+            dispatch(setAppErrorAC('Some server error occurred'))
+            dispatch(setAppStatusAC('failed'))
+        }
+    })
+    .catch((error)=>{
+        dispatch(setAppErrorAC(error.message ? error.message : 'Some network error occurred'))
+        dispatch(setAppStatusAC('failed'))
+    })
+}
 
 type ActionsType = ReturnType<typeof setIsLoggedInAC> | 
                    ReturnType<typeof setIsInitializedAC> 

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Checkbox, FormControlLabel, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import classes from './Profile.module.css';
 import { authAPI, LoginDataType } from "../../api/cards-api";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,18 +13,22 @@ const data:LoginDataType={ email: "cards@test.com", password: "Qwertyuiop123", r
 export const Profile = () => {
 
     const dispatch=useAppDispatch()
-    const auth=useSelector<AppRootStateType,InitialAuthStateType>(state=>state.auth)
-    const app=useSelector<AppRootStateType,InitialAppStateType>(state=>state.app)
+    const { isInitialized, isLoggedIn }=useSelector<AppRootStateType,InitialAuthStateType>(state=>state.auth)
+    const  { status, error }=useSelector<AppRootStateType,InitialAppStateType>(state=>state.app)
 
     
-    console.log(auth, app)
-    useEffect(()=>{
-        dispatch(authTC())
 
-        // authAPI.me().then(response=>{console.log(response)})
-            // authAPI.logout().then(res=>console.log(res))
-        // authAPI.login(data).then(res=>console.log(res.data.name))
-    },[])
+    // useEffect(()=>{
+    //     dispatch(authTC())
+
+    //     authAPI.me().then(response=>{console.log(response)})
+    //         authAPI.logout().then(res=>console.log(res))
+    //     authAPI.login(data).then(res=>console.log(res.data.name))
+    // },[])
+
+    if(!isLoggedIn){
+    return <Navigate to={'/login'}/>
+  }
 
     return (
         <div className={classes.main}>

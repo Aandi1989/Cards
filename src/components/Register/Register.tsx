@@ -24,7 +24,7 @@ export const Register = () => {
                     <p className={classes.container__passwordInfo__item}>• numbers</p>
                 </div>
                 <div className={classes.container__buttons}>
-                    <Link className={classes.container__buttons__cancelBox} to='/SignIn'>
+                    <Link className={classes.container__buttons__cancelBox} to='/login'>
                         <div className={classes.cancelBotton}>Cancel</div>
                     </Link>
                     <Link className={classes.container__buttons__signUpBox} to='/SignIn'>

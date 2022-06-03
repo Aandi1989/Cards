@@ -13,11 +13,11 @@ export const ForgotPassword = () => {
                     <TextField id="standard-basic" label="Email" variant="standard" style={{ width: '100%' }} />
                 </div>
                 <p className={classes.container__enterEmailText}>Enter your email address and we will send you further instructions</p>
-                <Link className={classes.container__sendInstrBox} to='/SignIn'>
+                <Link className={classes.container__sendInstrBox} to='/checkEmail'>
                     <div className={classes.sendInstrBotton}>Send Instruction</div>
                 </Link>
                 <p className={classes.container__rememberPasswordText}>Did you remember your password?</p>
-                <Link className={classes.container__tryLogLink} to='/SingUp'>Try logging in</Link>
+                <Link className={classes.container__tryLogLink} to='/login'>Try logging in</Link>
                 
             </div>
         </div>
