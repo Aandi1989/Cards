@@ -4,11 +4,11 @@ import { Link, Navigate } from "react-router-dom";
 import classes from './Login.module.css';
 import { useSelector } from "react-redux";
 import { AppRootStateType, useAppDispatch } from "../../Store/store";
-import { InitialAuthStateType, loginTC } from "../../Store/auth-reducer";
+import { InitialAuthStateType, loginTC, setIsRegisteredAC } from "../../Store/auth-reducer";
 import { InitialAppStateType } from "../../Store/app-reducer";
 import {useFormik} from 'formik';
 
-type FormikErrorType = {
+export type FormikErrorType = {
     email?: string
     password?: string
     rememberMe?: boolean
@@ -16,7 +16,7 @@ type FormikErrorType = {
 
 export const Login = () => {
 
-    const { isInitialized, isLoggedIn } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
+    const { isRegistered,isInitialized, isLoggedIn } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
     const { status, error } = useSelector<AppRootStateType, InitialAppStateType>(state => state.app)
     const dispatch=useAppDispatch()
     
@@ -51,6 +51,10 @@ export const Login = () => {
          return <Navigate to='/'/>
      }
 
+     if(isRegistered){
+        dispatch(setIsRegisteredAC(false))
+     }
+
     return (
         <form onSubmit={formik.handleSubmit}>
         <div className={classes.main}>
@@ -67,7 +71,7 @@ export const Login = () => {
                     id="standard-basic" label="Password" variant="standard" style={{ width: '100%' }} />
                 </div>
                 {formik.touched.password && formik.errors.password ? <div className={classes.errorBox}>{formik.errors.password}</div> : 
-                 <div className={classes.errorBox}></div>}
+                 <div className={classes.errorBox}></div>} 
                 <div className={classes.container__rememberMeField}>
                     <FormControlLabel label={<Typography sx={{ fontSize: 14, fontWeight: '600' }}>Remember Me</Typography>} 
                     {...formik.getFieldProps('rememberMe')}  control={<Checkbox />} />

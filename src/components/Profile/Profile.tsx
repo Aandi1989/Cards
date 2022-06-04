@@ -18,7 +18,6 @@ export const Profile = () => {
     const logoutHandler=()=>{ dispatch(logoutTC())}
 
     if(!isLoggedIn){
-        console.log("zalupa")
     return <Navigate to={'/login'}/>
   }
 

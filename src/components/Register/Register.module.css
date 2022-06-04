@@ -28,7 +28,7 @@
     margin-bottom:30px ;
 }
 .container__emailField,.container__passwordField,.container__confirmPasswordField{
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 .container__passwordInfo__title{
     font-weight: 400;
@@ -45,7 +45,7 @@
     margin-top: auto;
     justify-content: space-around;
 }
-.container__buttons__cancelBox,.container__buttons__signUpBox{
+.container__buttons__cancelBox{
     text-decoration: none;
 }
 .cancelBotton{
@@ -58,6 +58,8 @@ padding: 9px 20px;
 border-radius: 30px;
 }
 .signUpBotton{
+border:none;
+font-size: 16px;
 color: white;    
 background-color:rgb(33,38,143);
 width: 180px;
@@ -65,6 +67,11 @@ height: 40px;
 margin: 0 auto;
 padding: 9px 59px;
 border-radius: 30px;
+}
+.errorBox{
+    min-height: 16px;
+    color:red;
+    line-height: 16px;
 }
 
 

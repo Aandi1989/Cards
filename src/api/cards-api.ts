@@ -15,6 +15,9 @@ export const authAPI={
     },
     logout(){
         return instance.delete<LogoutType>(`auth/me`)
+    },
+    register(data:LoginDataType){
+        return instance.post<LoginDataType,AxiosResponse<RegisterType>>(`auth/register`,data)
     }
 }
 
@@ -22,7 +25,7 @@ export const authAPI={
 export type LoginDataType={
     email:string
     password:string
-    rememberMe:boolean
+    rememberMe?:boolean
 }
 export type LogoutType={
     info:string
@@ -36,8 +39,11 @@ export type UserType={
         name: string
         publicCardPacksCount: number
         rememberMe: boolean
-        token: string
-        tokenDeathTime: number
+        token?: string
+        tokenDeathTime?: number
         updated: string
         verified: boolean
     }
+export type RegisterType={
+    addedUser:UserType
+}    
