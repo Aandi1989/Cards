@@ -108,6 +108,11 @@ export const registerTC = (data: LoginDataType) => (dispatch: Dispatch<ActionsTy
         }
     })
 }
+export const forgotTC=(email:string)=>(dispatch:Dispatch<ActionsType>)=>{
+    dispatch(setAppStatusAC('loading'))
+    authAPI.forgot(email)
+    .then(res=>console.log(res))
+}
 
 type ActionsType = ReturnType<typeof setIsLoggedInAC> |
     ReturnType<typeof setIsInitializedAC> | ReturnType<typeof setIsRegisteredAC>

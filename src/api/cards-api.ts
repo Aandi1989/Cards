@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 
 export const instance = axios.create({
-    baseURL: 'http://localhost:7542/2.0/',
-    // baseURL: 'https://neko-back.herokuapp.com/2.0/',
+    // baseURL: 'http://localhost:7542/2.0/',
+    baseURL: 'https://neko-back.herokuapp.com/2.0/',
     withCredentials: true
 })
 
@@ -18,7 +18,15 @@ export const authAPI={
     },
     register(data:LoginDataType){
         return instance.post<LoginDataType,AxiosResponse<RegisterType>>(`auth/register`,data)
+    },
+    forgot(email:string){
+        return instance.post('auth/forgot',{...forgotData,email:email})
     }
+}
+const forgotData={
+    email:'',
+    from:'aliaksandr.novik2021@gmail.com',
+    message:`<div>Password recovery <a href='http://localhost:3000/set-new-password/$token'><a/></div>`
 }
 
 //types
