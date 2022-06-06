@@ -1,18 +1,10 @@
 import { Checkbox, FormControlLabel, TextField, Typography } from "@mui/material";
 import React from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, HashRouter } from "react-router-dom";
 import classes from './CheckEmail.module.css';
 import envelope from '../../icons/envelope5.png'
 
 export const CheckEmail = () => {
-
-    const params=useParams()
-    console.log(params)
-    alert(JSON.stringify(params))
-
-    const [searchParams,setSearchParams]=useSearchParams()
-  const newPAram=Object.fromEntries(searchParams)
-  alert(newPAram)
 
     return (
         <div className={classes.main}>

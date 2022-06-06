@@ -20,7 +20,7 @@ export const authAPI={
         return instance.post<LoginDataType,AxiosResponse<RegisterType>>(`auth/register`,data)
     },
     forgot(email:string){
-        return instance.post('auth/forgot',{...forgotData,email:email})
+        return instance.post<ForgotPasswordType>('auth/forgot',{...forgotData,email:email})
     }
 }
 const forgotData={
@@ -34,6 +34,12 @@ export type LoginDataType={
     email:string
     password:string
     rememberMe?:boolean
+}
+export type ForgotPasswordType={
+    answer: boolean
+    html: boolean
+    info: string
+    success: boolean
 }
 export type LogoutType={
     info:string

@@ -1,15 +1,17 @@
 import { Checkbox, FormControlLabel, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
-import { forgotTC } from "../../Store/auth-reducer";
-import { useAppDispatch } from "../../Store/store";
+import { useSelector } from "react-redux";
+import { Link, Navigate, useParams } from "react-router-dom";
+import { forgotTC, InitialAuthStateType } from "../../Store/auth-reducer";
+import { AppRootStateType, useAppDispatch } from "../../Store/store";
 import { FormikErrorType } from "../Login/Login";
 import classes from './ForgotPassword.module.css';
 
 export const ForgotPassword = () => {
 
     const dispatch = useAppDispatch()
+    const {isEmailSent}=useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
     const formik = useFormik({
         initialValues: {
             email: ''
@@ -26,11 +28,12 @@ export const ForgotPassword = () => {
         },
 
         onSubmit: values => {
-            console.log(values.email)
             dispatch(forgotTC(values.email))
-            // formik.resetForm()
         },
     })
+    if (isEmailSent) {
+        return <Navigate to={'/checkEmail'} />
+    }
 
     return (
         <form onSubmit={formik.handleSubmit}>

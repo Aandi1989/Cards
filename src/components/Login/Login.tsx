@@ -4,7 +4,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import classes from './Login.module.css';
 import { useSelector } from "react-redux";
 import { AppRootStateType, useAppDispatch } from "../../Store/store";
-import { InitialAuthStateType, loginTC, setIsRegisteredAC } from "../../Store/auth-reducer";
+import { InitialAuthStateType, loginTC, setIsEmailSentAC, setIsRegisteredAC } from "../../Store/auth-reducer";
 import { InitialAppStateType } from "../../Store/app-reducer";
 import {useFormik} from 'formik';
 
@@ -16,7 +16,7 @@ export type FormikErrorType = {
 
 export const Login = () => {
 
-    const { isRegistered,isInitialized, isLoggedIn } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
+    const { isRegistered,isInitialized, isLoggedIn, isEmailSent } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
     const { status, error } = useSelector<AppRootStateType, InitialAppStateType>(state => state.app)
     const dispatch=useAppDispatch()
     
@@ -51,8 +51,9 @@ export const Login = () => {
          return <Navigate to='/'/>
      }
 
-     if(isRegistered){
+     if(isRegistered || isEmailSent){
         dispatch(setIsRegisteredAC(false))
+        dispatch(setIsEmailSentAC(false))
      }
 
     return (

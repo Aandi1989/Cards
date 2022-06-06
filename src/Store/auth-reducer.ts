@@ -5,12 +5,14 @@ import { SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType, setAppEr
 export type InitialAuthStateType = {
     isLoggedIn: boolean
     isInitialized: boolean
-    isRegistered:boolean
+    isRegistered: boolean
+    isEmailSent: boolean
 }
 const initialState: InitialAuthStateType = {
     isLoggedIn: false,
     isInitialized: false,
-    isRegistered:false
+    isRegistered: false,
+    isEmailSent: false
 }
 
 export const authReducer = (state: InitialAuthStateType = initialState, action: ActionsType): InitialAuthStateType => {
@@ -21,6 +23,8 @@ export const authReducer = (state: InitialAuthStateType = initialState, action: 
             return { ...state, isInitialized: action.value }
         case 'SET-IS-REGISTERED':
             return { ...state, isRegistered: action.value }
+        case 'SET-IS-EMAIL-SENT':
+            return { ...state, isEmailSent: action.value }
         default:
             return state
     }
@@ -29,6 +33,7 @@ export const authReducer = (state: InitialAuthStateType = initialState, action: 
 export const setIsLoggedInAC = (value: boolean) => ({ type: 'SET-IS-LOGGED-IN', value } as const)
 export const setIsInitializedAC = (value: boolean) => ({ type: 'SET-IS-INITIALIZED', value } as const)
 export const setIsRegisteredAC = (value: boolean) => ({ type: 'SET-IS-REGISTERED', value } as const)
+export const setIsEmailSentAC = (value: boolean) => ({ type: 'SET-IS-EMAIL-SENT', value } as const)
 
 export const authTC = () => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
@@ -39,7 +44,6 @@ export const authTC = () => (dispatch: Dispatch<ActionsType>) => {
                 dispatch(setIsLoggedInAC(true))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
-
                 dispatch(setAppErrorAC('Some server error occurred'))
                 dispatch(setAppStatusAC('failed'))
             }
@@ -89,31 +93,44 @@ export const logoutTC = () => (dispatch: Dispatch<ActionsType>) => {
 export const registerTC = (data: LoginDataType) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.register(data)
-    .then(res=>{
-        if(res.status == 201){
+        .then(res => {
+            if (res.status == 201) {
                 dispatch(setIsRegisteredAC(true))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
                 dispatch(setAppErrorAC('Some server error occurred'))
                 dispatch(setAppStatusAC('failed'))
             }
-    })
-    .catch(error=>{
-        if(error.response.data.error=='email already exists /ᐠ｡ꞈ｡ᐟ\\'){
-            dispatch(setAppErrorAC('Email already exists'))
-            dispatch(setAppStatusAC('failed'))
-        }else{
-            dispatch(setAppErrorAC(error.response.data.error ? error.response.data.error : 'Some network error occurred'))
-            dispatch(setAppStatusAC('failed'))
-        }
-    })
+        })
+        .catch(error => {
+            if (error.response.data.error == 'email already exists /ᐠ｡ꞈ｡ᐟ\\') {
+                dispatch(setAppErrorAC('Email already exists'))
+                dispatch(setAppStatusAC('failed'))
+            } else {
+                dispatch(setAppErrorAC(error.response.data.error ? error.response.data.error : 'Some network error occurred'))
+                dispatch(setAppStatusAC('failed'))
+            }
+        })
 }
-export const forgotTC=(email:string)=>(dispatch:Dispatch<ActionsType>)=>{
+export const forgotTC = (email: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.forgot(email)
-    .then(res=>console.log(res))
+        .then(res => {
+            if (res.data.success) {
+                dispatch(setIsEmailSentAC(true))
+                dispatch(setAppStatusAC('succeeded'))
+            } else {
+                dispatch(setAppErrorAC('Some server error occurred'))
+                dispatch(setAppStatusAC('failed'))
+            }
+        })
+        .catch(error => {
+            dispatch(setAppErrorAC(error.message ? error.message : 'Some network error occurred'))
+            dispatch(setAppStatusAC('failed'))
+        })
+    // "sent —ฅ/ᐠ.̫ .ᐟ\\ฅ—"
 }
 
 type ActionsType = ReturnType<typeof setIsLoggedInAC> |
     ReturnType<typeof setIsInitializedAC> | ReturnType<typeof setIsRegisteredAC>
-    | SetAppErrorActionType | SetAppStatusActionType
+    | SetAppErrorActionType | SetAppStatusActionType | ReturnType<typeof setIsEmailSentAC>
