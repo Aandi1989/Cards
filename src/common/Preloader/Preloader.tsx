@@ -1,6 +1,6 @@
 import React from "react";
 import classes from './Preloader.module.css'
-import spinner from '../icons/oldSpinner.svg'
+import spinner from '../../icons/oldSpinner.svg'
 
 export const Preloader=()=>{
     return(

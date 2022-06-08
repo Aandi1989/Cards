@@ -10,7 +10,7 @@ import { AppRootStateType, useAppDispatch } from './Store/store';
 import { authTC, InitialAuthStateType } from './Store/auth-reducer';
 import { useSelector } from 'react-redux';
 import { InitialAppStateType } from './Store/app-reducer';
-import { Preloader } from './common/Preloader'
+import { Preloader } from './common/Preloader/Preloader'
 import { Route, Routes, Navigate } from 'react-router-dom';
 
 function App() {
@@ -30,7 +30,7 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path='/' element={<Profile/>} />
+        <Route path='/profile' element={<Profile/>} />
         <Route path='/login' element={<Login/>} />
         <Route path='/register' element={<Register/>} />
         <Route path='/forgotPassword' element={<ForgotPassword/>} />

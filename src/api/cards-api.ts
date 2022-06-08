@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 
 export const instance = axios.create({
-    // baseURL: 'http://localhost:7542/2.0/',
-    baseURL: 'https://neko-back.herokuapp.com/2.0/',
+    baseURL: 'http://localhost:7542/2.0/',
+    // baseURL: 'https://neko-back.herokuapp.com/2.0/',
     withCredentials: true
 })
 
@@ -27,6 +27,11 @@ const forgotData={
     email:'',
     from:'aliaksandr.novik2021@gmail.com',
     message:`<div>Password recovery <a href='http://localhost:3000/set-new-password/$token'><a/></div>`
+}
+export const profileAPI={
+    getPacks(data:GetPacksType){
+        return instance.get(`cards/pack`,{ params: data })
+    }
 }
 
 //types
@@ -60,4 +65,40 @@ export type UserType={
     }
 export type RegisterType={
     addedUser:UserType
-}    
+}
+export type GetPacksType={
+   packName?:string
+   min?:number
+   max?:number
+   sortPacks?:string
+   page?:number
+   pageCount?:number
+   user_id?:string 
+} 
+export type PacksType={
+    cardPacks: PackType[]
+    cardPacksTotalCount: number
+    maxCardsCount: number
+    minCardsCount: number
+    page: number
+    pageCount: number
+    token: string
+    tokenDeathTime: number
+}  
+export type PackType={
+    cardsCount: number
+    created: string
+    grade: number
+    more_id: string
+    name: string
+    path: string
+    private: false
+    rating: number
+    shots: number
+    type: string
+    updated: string
+    user_id: string
+    user_name: string
+    __v: number
+    _id: string
+} 

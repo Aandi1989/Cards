@@ -128,7 +128,6 @@ export const forgotTC = (email: string) => (dispatch: Dispatch<ActionsType>) => 
             dispatch(setAppErrorAC(error.message ? error.message : 'Some network error occurred'))
             dispatch(setAppStatusAC('failed'))
         })
-    // "sent —ฅ/ᐠ.̫ .ᐟ\\ฅ—"
 }
 
 type ActionsType = ReturnType<typeof setIsLoggedInAC> |
