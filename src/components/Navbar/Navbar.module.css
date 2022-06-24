@@ -1,0 +1,37 @@
+.main{
+height: 8vh;
+padding: 0 15%;
+background-color: rgb(253,242,248);
+display: flex;
+justify-content: space-between;
+align-items:center;   
+}
+
+.buttonBox{
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+    height: 100%;
+    border: 1px solid red;
+}
+.buttonBox__packs{
+    border:1px solid yellow;
+    width: 50%;
+    /* height: 100%; */
+
+}
+.buttonBox__profile{
+    border:1px solid green;
+    width: 50%;
+    /* height: 100%; */
+}
+.singOutButton{
+    color: rgb(33,38,143);
+    font-weight: 500;
+    width: 90px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 3px;
+    background-color: rgb(215,216,239);
+    cursor: pointer;
+}

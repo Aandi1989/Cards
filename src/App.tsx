@@ -30,7 +30,7 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path='/profile' element={<Profile/>} />
+        <Route path='/' element={<Profile/>} />
         <Route path='/login' element={<Login/>} />
         <Route path='/register' element={<Register/>} />
         <Route path='/forgotPassword' element={<ForgotPassword/>} />
