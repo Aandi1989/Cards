@@ -2,10 +2,7 @@
     background: linear-gradient( rgb(230,212,222), rgb(25,118,210));
     width: 100vw;
     height: 100vh;
-    /* padding: 0 15%; */
-    /* display: flex;
-    justify-content: center;
-    align-items:center; */
+   
 }
 .body{
     padding: 0 15%;

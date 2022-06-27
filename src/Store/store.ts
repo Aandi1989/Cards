@@ -3,10 +3,12 @@ import {useDispatch} from "react-redux";
 import { appReducer } from "./app-reducer";
 import { authReducer } from "./auth-reducer";
 import thunk, { ThunkDispatch } from 'redux-thunk'
+import { navbarReducer } from "./navbar-reducer";
 
 const rootReducers=combineReducers({
     app:appReducer,
-    auth:authReducer
+    auth:authReducer,
+    navbar:navbarReducer
 })
 
 export const store=createStore(rootReducers,applyMiddleware(thunk))

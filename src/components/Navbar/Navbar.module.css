@@ -1,30 +1,23 @@
 .main{
-height: 8vh;
+height: 7vh;
 padding: 0 15%;
 background-color: rgb(253,242,248);
 display: flex;
 justify-content: space-between;
 align-items:center;   
 }
+.header{
+    font-size: 22px;
+}
 
 .buttonBox{
     display: flex;
     justify-content: space-between;
-    width: 250px;
+    width: 300px;
     height: 100%;
-    border: 1px solid red;
+   
 }
-.buttonBox__packs{
-    border:1px solid yellow;
-    width: 50%;
-    /* height: 100%; */
 
-}
-.buttonBox__profile{
-    border:1px solid green;
-    width: 50%;
-    /* height: 100%; */
-}
 .singOutButton{
     color: rgb(33,38,143);
     font-weight: 500;
@@ -34,4 +27,33 @@ align-items:center;
     border-radius: 3px;
     background-color: rgb(215,216,239);
     cursor: pointer;
+}
+.singOutButton:hover{
+    color:white;
+    background-color:rgb(241, 69, 61);
+    transition: all 0.1s;
+}
+.buttonBox__profile, .buttonBox__packs, .buttonBox__profile_active, .buttonBox__packs_active{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    cursor: pointer;
+    width: 50%;
+}
+.buttonBox__profile, .buttonBox__packs{
+    border-bottom: 3px solid rgb(253,242,248);
+}
+.buttonBox__profile_active, .buttonBox__packs_active{
+    background-color:rgb(215,205,221);
+    border-bottom: 3px solid rgb(33,38,143);
+}
+.buttonBox__profile:hover, .buttonBox__packs:hover{
+    background-color:rgb(215,205,221);
+    border-bottom: 3px solid rgb(154,145,200);
+    transition: all 0.1s;
+}
+.buttonBox__profile__icon,.buttonBox__packs__icon{
+    width:25px;
+    height: 25px;
+    margin-right: 10px;
 }

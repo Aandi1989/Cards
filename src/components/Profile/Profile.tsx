@@ -8,6 +8,9 @@ import { authTC, InitialAuthStateType, logoutTC } from "../../Store/auth-reducer
 import { AppRootStateType, useAppDispatch } from "../../Store/store";
 import { InitialAppStateType } from "../../Store/app-reducer";
 import { Navbar } from "../Navbar/Navbar";
+import { InitialNavbarStateType } from "../../Store/navbar-reducer";
+import { MyProfile } from "../MyProfile/MyProfile";
+import { PacksList } from "../PacksList/PacksList";
 
 const data: LoginDataType = { email: "cards@test.com", password: "Qwertyuiop123", rememberMe: true }
 
@@ -16,7 +19,7 @@ export const Profile = () => {
     const dispatch = useAppDispatch()
     const { isInitialized, isLoggedIn } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
     const { status, error } = useSelector<AppRootStateType, InitialAppStateType>(state => state.app)
-    const logoutHandler = () => { dispatch(logoutTC()) }
+    const { currentSection} = useSelector<AppRootStateType, InitialNavbarStateType>(state => state.navbar)
 
     useEffect(() => {
         profileAPI.getPacks({ page: 2 }).then(res => console.log(res))
@@ -31,10 +34,7 @@ export const Profile = () => {
 
         <div className={classes.main}>
             <Navbar />
-            <div className={classes.body}>
-                <h4>ProfilePage</h4>
-                <button onClick={logoutHandler}>Log out</button>
-            </div>
+            {currentSection=='packsList' ? <PacksList/> : <MyProfile/>}
 
         </div>
 
