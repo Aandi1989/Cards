@@ -22,8 +22,11 @@ export const Profile = () => {
     const { currentSection} = useSelector<AppRootStateType, InitialNavbarStateType>(state => state.navbar)
 
     useEffect(() => {
-        profileAPI.getPacks({ page: 2 }).then(res => console.log(res))
-    }, [])
+        if (isLoggedIn) {
+            // console.log('useEffect inside Profile')
+            profileAPI.getPacks({ page: 2,user_id:"629654472f55f600047d09b4" }).then(res => console.log(res))
+        }
+    }, [isLoggedIn])
 
     if (!isLoggedIn) {
         return <Navigate to={'/login'} />
