@@ -39,6 +39,8 @@ align-items:center;
     align-items:center;
     cursor: pointer;
     width: 50%;
+    text-decoration: none;
+    color: black;
 }
 .buttonBox__profile, .buttonBox__packs{
     border-bottom: 3px solid rgb(253,242,248);

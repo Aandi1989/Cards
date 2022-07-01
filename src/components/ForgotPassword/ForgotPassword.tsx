@@ -50,7 +50,7 @@ export const ForgotPassword = () => {
                     <p className={classes.container__enterEmailText}>Enter your email address and we will send you further instructions</p>
                     <button type='submit' className={classes.sendInstrBotton}>Send Instruction</button>
                     <p className={classes.container__rememberPasswordText}>Did you remember your password?</p>
-                    <Link className={classes.container__tryLogLink} to='/login'>Try logging in</Link>
+                    <Link className={classes.container__tryLogLink} to='/'>Try logging in</Link>
 
                 </div>
             </div>

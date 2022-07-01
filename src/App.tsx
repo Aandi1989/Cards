@@ -11,7 +11,10 @@ import { authTC, InitialAuthStateType } from './Store/auth-reducer';
 import { useSelector } from 'react-redux';
 import { InitialAppStateType } from './Store/app-reducer';
 import { Preloader } from './common/Preloader/Preloader'
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate, Outlet } from 'react-router-dom';
+import { Navbar } from './components/Navbar/Navbar';
+import { MyProfile } from './components/MyProfile/MyProfile';
+import { PacksList } from './components/PacksList/PacksList';
 
 function App() {
 
@@ -26,17 +29,27 @@ function App() {
   if (!isInitialized) {
     return <Preloader />
   }
-  
+
   return (
     <div className="App">
       <Routes>
-        <Route path='/' element={<Profile/>} />
-        <Route path='/login' element={<Login/>} />
-        <Route path='/register' element={<Register/>} />
-        <Route path='/forgotPassword' element={<ForgotPassword/>} />
-        <Route path='/checkEmail' element={<CheckEmail/>} />
-        <Route path='/set-new-password/:token' element={<CreatePassword/>} />
-        <Route path="*" element={<main style={{ padding: "10px",background: "linear-gradient( rgb(230,212,222), rgb(25,118,210))" }}><p>There's nothing here!</p> </main>}/>
+        <Route path='/' element={<Login />} />
+        <Route path='/profile/*' element={(
+          <div>
+            <Profile/>
+            <Routes>
+                <Route path='/' element={<MyProfile/>}/>
+                <Route path='/myprofile' element={<MyProfile/>}/>
+                <Route path='/packsList' element={<PacksList/>}/>
+                <Route path='*' element={<p>Error 404. Incorrect URL.</p>}/>
+            </Routes>
+          </div>
+        )} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/forgotPassword' element={<ForgotPassword />} />
+        <Route path='/checkEmail' element={<CheckEmail />} />
+        <Route path='/set-new-password/:token' element={<CreatePassword />} />
+        <Route path="*" element={<p>Error 404. Incorrect URL.</p>}/>
       </Routes>
     </div>
   );

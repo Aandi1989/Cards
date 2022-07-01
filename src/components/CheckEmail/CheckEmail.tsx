@@ -14,7 +14,7 @@ export const CheckEmail = () => {
                 <img className={classes.mailImg} src={envelope}/>
                 </div>
                 <p className={classes.container__infoText}>We've sent an email with instruction to example@email.com</p>
-                <Link className={classes.container__backBox} to='/login'>
+                <Link className={classes.container__backBox} to='/'>
                     <div className={classes.container__backBox__backBotton}>Back</div>
                 </Link>
                 

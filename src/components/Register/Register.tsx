@@ -59,7 +59,7 @@ export const Register = () => {
 
 
     if (isRegistered) {
-        return <Navigate to={'/login'} />
+        return <Navigate to={'/'} />
     }
 
     if(error!='Passwords do not match' && error!='Email already exists'){
@@ -96,7 +96,7 @@ export const Register = () => {
                         <p className={classes.container__passwordInfo__item}>• numbers</p>
                     </div>
                     <div className={classes.container__buttons}>
-                        <Link className={classes.container__buttons__cancelBox} to='/login'>
+                        <Link className={classes.container__buttons__cancelBox} to='/'>
                             <div className={classes.cancelBotton}>Cancel</div>
                         </Link>
                         <button type='submit' className={classes.signUpBotton}>Sign Up</button>
