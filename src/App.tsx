@@ -21,7 +21,7 @@ function App() {
   const dispatch = useAppDispatch()
   const { isInitialized, isLoggedIn } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
   const { status, error } = useSelector<AppRootStateType, InitialAppStateType>(state => state.app)
-
+ 
   useEffect(() => {
     dispatch(authTC())
   }, [])
@@ -34,9 +34,9 @@ function App() {
     <div className="App">
       <Routes>
         <Route path='/' element={<Login />} />
-        <Route path='/profile/*' element={(
+        <Route path='/main/*' element={(
           <div>
-            <Profile/>
+            <Navbar/>
             <Routes>
                 <Route path='/' element={<MyProfile/>}/>
                 <Route path='/myprofile' element={<MyProfile/>}/>

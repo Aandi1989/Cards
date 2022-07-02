@@ -1,4 +1,6 @@
 .main{
+    height: 93vh;
+    background: linear-gradient( rgb(230,212,222), rgb(25,118,210));
     color:red;
     padding: 0 15%;
 }

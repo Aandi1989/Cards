@@ -1,6 +1,7 @@
 import { Dispatch } from "redux"
 import { authAPI, LoginDataType } from "../api/cards-api"
 import { SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType, setAppErrorAC } from "./app-reducer"
+import { setProfileDataAC } from "./profile-reducer"
 
 export type InitialAuthStateType = {
     isLoggedIn: boolean
@@ -39,9 +40,11 @@ export const authTC = () => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.me()
         .then(res => {
+            // console.log(res)
             if (res.status == 200) {
                 dispatch(setIsInitializedAC(true))
                 dispatch(setIsLoggedInAC(true))
+                dispatch(setProfileDataAC(res.data))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
                 dispatch(setAppErrorAC('Some server error occurred'))
@@ -60,8 +63,10 @@ export const loginTC = (data: LoginDataType) => (dispatch: Dispatch<ActionsType>
     dispatch(setAppStatusAC('loading'))
     authAPI.login(data)
         .then(res => {
+            // console.log(res)
             if (res.status == 200) {
                 dispatch(setIsLoggedInAC(true))
+                dispatch(setProfileDataAC(res.data))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
                 dispatch(setAppErrorAC('Some server error occurred'))
@@ -132,4 +137,4 @@ export const forgotTC = (email: string) => (dispatch: Dispatch<ActionsType>) => 
 
 type ActionsType = ReturnType<typeof setIsLoggedInAC> |
     ReturnType<typeof setIsInitializedAC> | ReturnType<typeof setIsRegisteredAC>
-    | SetAppErrorActionType | SetAppStatusActionType | ReturnType<typeof setIsEmailSentAC>
+    | SetAppErrorActionType | SetAppStatusActionType | ReturnType<typeof setIsEmailSentAC> | ReturnType<typeof setProfileDataAC>

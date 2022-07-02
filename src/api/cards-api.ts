@@ -62,6 +62,8 @@ export type UserType={
         tokenDeathTime?: number
         updated: string
         verified: boolean
+        __v: number
+        _id: string
     }
 export type RegisterType={
     addedUser:UserType

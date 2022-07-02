@@ -48,7 +48,7 @@ export const Login = () => {
      })
 
      if(isLoggedIn){
-         return <Navigate to='/profile/myprofile'/>
+         return <Navigate to='/main/myprofile'/>
      }
 
      if(isRegistered || isEmailSent){
