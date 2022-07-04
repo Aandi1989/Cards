@@ -1,5 +1,5 @@
 import React from "react";
-import classes from './Navbar.module.css';
+import classes from './Header.module.css';
 import { BsPerson } from "react-icons/bs";
 import { GiCardPick } from "react-icons/gi";
 import { GiCardExchange } from "react-icons/gi";
@@ -11,7 +11,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
 
-export const Navbar = () => {
+export const Header = () => {
     const { pathname } = useLocation();
     const dispatch = useAppDispatch()
     const { isInitialized, isLoggedIn } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)

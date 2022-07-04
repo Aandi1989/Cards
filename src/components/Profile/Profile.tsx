@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authTC, InitialAuthStateType, logoutTC } from "../../Store/auth-reducer";
 import { AppRootStateType, useAppDispatch } from "../../Store/store";
 import { InitialAppStateType } from "../../Store/app-reducer";
-import { Navbar } from "../Navbar/Navbar";
+import { Header } from "../Header/Header";
 import { InitialNavbarStateType } from "../../Store/navbar-reducer";
 import { MyProfile } from "../MyProfile/MyProfile";
 import { PacksList } from "../PacksList/PacksList";
@@ -36,7 +36,7 @@ export const Profile = () => {
 
 
         <div className={classes.main}>
-            <Navbar />
+            <Header />
             {currentSection=='packsList' ? <PacksList/> : <MyProfile/>}
 
         </div>

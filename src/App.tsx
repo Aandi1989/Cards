@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import { InitialAppStateType } from './Store/app-reducer';
 import { Preloader } from './common/Preloader/Preloader'
 import { Route, Routes, Navigate, Outlet } from 'react-router-dom';
-import { Navbar } from './components/Navbar/Navbar';
+import { Header } from './components/Header/Header';
 import { MyProfile } from './components/MyProfile/MyProfile';
 import { PacksList } from './components/PacksList/PacksList';
 
@@ -36,7 +36,7 @@ function App() {
         <Route path='/' element={<Login />} />
         <Route path='/main/*' element={(
           <div>
-            <Navbar/>
+            <Header/>
             <Routes>
                 <Route path='/' element={<MyProfile/>}/>
                 <Route path='/myprofile' element={<MyProfile/>}/>
