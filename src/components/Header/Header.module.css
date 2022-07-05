@@ -52,7 +52,7 @@ align-items:center;
 .buttonBox__profile:hover, .buttonBox__packs:hover{
     background-color:rgb(215,205,221);
     border-bottom: 3px solid rgb(154,145,200);
-    transition: all 0.1s;
+    transition: all 0.3s;
 }
 .buttonBox__profile__icon,.buttonBox__packs__icon{
     width:25px;
