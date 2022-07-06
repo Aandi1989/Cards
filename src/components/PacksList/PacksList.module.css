@@ -7,8 +7,8 @@
 .container{
     /* border:1px solid green; */
     width: 70%;
-    /* min-height: 200px; */
-    /* height: 100%; */
+    max-height: calc(93vh - 130px);
+    /* overflow: hidden; */
     margin: 0 auto;
     background-color:white;
     border-radius:10px;
@@ -19,11 +19,8 @@
     background-color:rgb(236,236,249);
     border-radius: 10px 0 0 10px;
     padding:30px 20px;
-    /* min-height: 100%; */
 }
-.container__navbar{
 
-}
 .container__navbar__buttonsBox{
     display: flex;
     line-height: 35px;
@@ -50,4 +47,77 @@
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 20px;
+}
+.container__packsBox{
+    padding: 25px 35px;
+    width: 100%;
+    height: 100%;
+}
+.container__packsBox__title{
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+.container__packsBox__inputAddButtonBox {
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    width:100%;
+    line-height: 35px;
+    /* border:1px solid red; */
+    margin-bottom: 28px;
+}
+.packsBox__inputAddButtonBox__inputWrapper, .packsBox__inputAddButtonBox__inputWrapper_active{
+    display: flex;
+    align-items:center;
+    height: 35px;
+    border:1px solid;
+    width: calc(100% - 190px);
+    border-radius:3px;
+    background-color:rgb(245,245,252);
+    padding: 0 10px;
+}
+.packsBox__inputAddButtonBox__inputWrapper{
+    border-color:rgb(176,173,191) ;
+}
+
+.packsBox__inputAddButtonBox__inputWrapper_active{
+  border-color:grey;
+}
+.packsBox__inputAddButtonBox__inputWrapper:hover{
+    border-color: grey;
+    transition: all 0.2s;
+}
+.packsBox__inputAddButtonBox__inputWrapper input, .packsBox__inputAddButtonBox__inputWrapper_active input{
+    width:100%;
+    border:none;
+    background-color:transparent;
+}
+.packsBox__inputAddButtonBox__inputWrapper input:focus, .packsBox__inputAddButtonBox__inputWrapper_active input:focus{
+    outline:none;
+}
+.packsBox__inputAddButtonBox__addButton{
+    background-color:rgb(33, 38, 143);
+    height:100%;
+    color: white;
+    width: 170px;
+    text-align: center;
+    border-radius:25px;
+    cursor:pointer;
+}
+.container__packsBox__table{
+    width: 100%;
+    /* height: 100%; */
+    border:1px solid red;
+}
+.packsBox__table__header{
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr 2fr 3fr;
+    /* border:1px solid green; */
+    height: 35px;
+    line-height: 35px;
+    background-color: rgb(236,236,249);
+
+}
+.table__header__name{
+    padding-left: 15px;
 }

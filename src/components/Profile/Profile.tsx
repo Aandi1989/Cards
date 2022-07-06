@@ -8,7 +8,6 @@ import { authTC, InitialAuthStateType, logoutTC } from "../../Store/auth-reducer
 import { AppRootStateType, useAppDispatch } from "../../Store/store";
 import { InitialAppStateType } from "../../Store/app-reducer";
 import { Header } from "../Header/Header";
-import { InitialNavbarStateType } from "../../Store/navbar-reducer";
 import { MyProfile } from "../MyProfile/MyProfile";
 import { PacksList } from "../PacksList/PacksList";
 
@@ -19,7 +18,6 @@ export const Profile = () => {
     const dispatch = useAppDispatch()
     const { isInitialized, isLoggedIn } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
     const { status, error } = useSelector<AppRootStateType, InitialAppStateType>(state => state.app)
-    const { currentSection} = useSelector<AppRootStateType, InitialNavbarStateType>(state => state.navbar)
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -37,7 +35,6 @@ export const Profile = () => {
 
         <div className={classes.main}>
             <Header />
-            {currentSection=='packsList' ? <PacksList/> : <MyProfile/>}
 
         </div>
 

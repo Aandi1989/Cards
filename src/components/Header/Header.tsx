@@ -6,7 +6,6 @@ import { GiCardExchange } from "react-icons/gi";
 import { AppRootStateType, useAppDispatch } from "../../Store/store";
 import { InitialAuthStateType, logoutTC } from "../../Store/auth-reducer";
 import { useSelector } from "react-redux";
-import { CurrentSectionType, InitialNavbarStateType, setCurrentSectionAC } from "../../Store/navbar-reducer";
 import { Navigate, useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 

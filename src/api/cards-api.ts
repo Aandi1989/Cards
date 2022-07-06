@@ -30,7 +30,7 @@ const forgotData={
 }
 export const profileAPI={
     getPacks(data:GetPacksType){
-        return instance.get(`cards/pack`,{ params: data })
+        return instance.get<GetPacksType,AxiosResponse<PacksType>>(`cards/pack`,{ params: data })
     }
 }
 
