@@ -107,8 +107,7 @@
 .container__packsBox__table{
     width: 100%;
     box-shadow: 0px 0px 10px 1px rgba(97, 97, 97, 0.144);
-
-
+    margin-bottom: 25px;
     /* height: 100%; */
     /* border:1px solid red; */
 }

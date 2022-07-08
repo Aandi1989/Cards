@@ -12,6 +12,8 @@ import { BsXLg}  from "react-icons/bs";
 import { nanoid } from 'nanoid';
 import { changingDate } from "../../helper/ChahgingDate";
 import { ProfileDataStateType } from "../../Store/profile-reducer";
+import { Pagination } from "../Pagination/Pagination";
+
 
 
 
@@ -95,6 +97,7 @@ export const PacksList=()=>{
                             )
                         })}
                     </div>
+                    <Pagination/>
                 </div>
             </div>
         </div>   

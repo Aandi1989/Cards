@@ -28,7 +28,7 @@ export const getPacksTC = (data: GetPacksType) => (dispatch: Dispatch<ActionsTyp
     dispatch(setAppStatusAC('loading'))
     profileAPI.getPacks(data)
         .then(res => {
-            // console.log(res)
+            console.log(res)
             if (res.status == 200) {
                 dispatch(setPacksDataAC(res.data))
                 dispatch(setAppStatusAC('succeeded'))
