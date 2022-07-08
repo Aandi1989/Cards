@@ -18,17 +18,6 @@ export const MyProfile=()=>{
     const packs=useSelector<AppRootStateType,PacksType>(state=>state.packs)
     console.log(packs)
 
-    const changingDate=(date:string)=>{
-        let changedDate= date.split('-')
-        let year=changedDate[0].slice(0,4)
-        let month=changedDate[1]
-        let currentDate=changedDate[2].slice(0,2)
-        
-        console.log(changedDate,year,month,currentDate)
-        // console.log(`${year}.${month}.${currentDate}`)
-    }
-    changingDate(packs.cardPacks[0].created)
-
     if (!isLoggedIn) {
         return <Navigate to={'/'} />
     }

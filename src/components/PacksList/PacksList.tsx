@@ -10,6 +10,8 @@ import classes from './PacksList.module.css';
 import { BiSearch}  from "react-icons/bi";
 import { BsXLg}  from "react-icons/bs";
 import { nanoid } from 'nanoid';
+import { changingDate } from "../../helper/ChahgingDate";
+import { ProfileDataStateType } from "../../Store/profile-reducer";
 
 
 
@@ -20,17 +22,23 @@ export const PacksList=()=>{
     const[focusOnInput,setFocusOnInput]=useState<Boolean>(false)
     const { isInitialized, isLoggedIn } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
     const  {cardPacks, cardPacksTotalCount, maxCardsCount, minCardsCount,page,pageCount}=useSelector<AppRootStateType,PacksType>(state=>state.packs)
+    const {_id}=useSelector<AppRootStateType,ProfileDataStateType>(state=>state.profile)
     const dispatch=useAppDispatch()
 
     useEffect(() => {
-            dispatch(getPacksTC({page:1, pageCount:10}))
+            dispatch(getPacksTC({page:page, pageCount:pageCount}))
         }, [])
 
-    const setCurrentPacksCategoryHandler=(category:PacksCategoryType)=>()=>{
-        setCurrentPacksCategory(category)
-    }
     const setFocusOnInputHandler=(value:boolean)=>()=>{
         setFocusOnInput(value)
+    }
+    const getMyPacksHandler=()=>{
+        dispatch(getPacksTC({page:page, pageCount:pageCount,user_id:_id}))
+        setCurrentPacksCategory('my')
+    }
+    const getAllPacksHandler=()=>{
+        dispatch(getPacksTC({page:page, pageCount:pageCount}))
+        setCurrentPacksCategory('all')
     }
 
     if (!isLoggedIn) {
@@ -43,9 +51,9 @@ export const PacksList=()=>{
                  <div className={classes.container__navbar}>
                     <div className={classes.container__navbar__buttonsTitle}>Show packs cards</div>
                     <div className={classes.container__navbar__buttonsBox}>
-                        <div onClick={setCurrentPacksCategoryHandler('my')} 
+                        <div onClick={getMyPacksHandler} 
                         className={currentPacksCategory=='my' ? classes.navbar__buttonBox__my_active : classes.navbar__buttonBox__my}>My</div>
-                        <div onClick={setCurrentPacksCategoryHandler('all')} 
+                        <div onClick={getAllPacksHandler} 
                         className={currentPacksCategory=='all' ? classes.navbar__buttonBox__all_active : classes.navbar__buttonBox__all}>All</div>
                     </div>
                     <div className={classes.container__navbar__rangeTitle}>Number of cards</div>
@@ -74,12 +82,14 @@ export const PacksList=()=>{
                             <div className={classes.table__header__actions}>Actions</div>
                         </div>
                         {cardPacks.map(pack=>{
+                            let updated=changingDate(pack.updated)
+                            let created=changingDate(pack.created)
                             return(
                                 <div key={nanoid()} className={classes.table__string__wrapper}>
                                     <div className={classes.table__string__name}>{pack.name}</div>
                                     <div className={classes.table__string__cards}>{pack.cardsCount}</div>
-                                    <div className={classes.table__string__updated}>{pack.updated}</div>
-                                    <div className={classes.table__string__created}>{pack.created}</div>
+                                    <div className={classes.table__string__updated}>{updated}</div>
+                                    <div className={classes.table__string__created}>{created}</div>
                                     <div className={classes.table__string__actions}>---</div>
                                 </div>
                             )
