@@ -85,13 +85,12 @@ export const PacksList=()=>{
                         </div>
                         {cardPacks.map(pack=>{
                             let updated=changingDate(pack.updated)
-                            let created=changingDate(pack.created)
                             return(
                                 <div key={nanoid()} className={classes.table__string__wrapper}>
                                     <div className={classes.table__string__name}>{pack.name}</div>
                                     <div className={classes.table__string__cards}>{pack.cardsCount}</div>
                                     <div className={classes.table__string__updated}>{updated}</div>
-                                    <div className={classes.table__string__created}>{created}</div>
+                                    <div className={classes.table__string__created}>{pack.user_name}</div>
                                     <div className={classes.table__string__actions}>---</div>
                                 </div>
                             )

@@ -1,3 +1,48 @@
 .main{
-    
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+.pagesBox{
+    display: flex;
+   
+}
+.pagesBox__page,.pagesBox__page_active{
+    width: 40px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    text-align: center;
+    margin-right: 5px;
+}
+.pagesBox__page_active{
+    background-color: rgb(33,38,143);
+    color:white;
+}
+.pagesBox__page:hover{
+    width: 40px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    text-align: center;
+    margin-right: 5px;
+    color:white;
+    background-color:rgb(182,190,219);
+    transition: background-color 0.3s
+}
+.iconWrapper{
+    display: flex;
+    border-radius: 5px;
+    justify-content: center;
+    align-items:center;
+    width: 40px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.iconWrapper:hover{
+    color:white;
+    background-color:rgb(182,190,219);
+    transition: background-color 0.3s
 }

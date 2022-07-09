@@ -34,27 +34,25 @@ export const Pagination = () => {
         }
     }
 
+    const setFirstTenHandler = () =>{
+        setCurrentTen(1)
+    }
+
+    const setLastTenHandler = () =>{
+        setCurrentTen(maxTen)
+    }
+
     return (
         <div className={classes.main}>
-            <BsChevronDoubleLeft />
-            <BsChevronLeft/>
-            <button onClick={decreaseCurrentTenHandler}>-</button>
-            <div>{pages.map(p => {
+            <div onClick={setFirstTenHandler} className={classes.iconWrapper}><HiOutlineChevronDoubleLeft /></div>
+            <div onClick={decreaseCurrentTenHandler} className={classes.iconWrapper}><HiOutlineChevronLeft/></div>
+            <div className={classes.pagesBox}>{pages.map(p => {
                 return (
-                    <span key={nanoid()}>{p}</span>
+                    <div className={p==page ? classes.pagesBox__page_active : classes.pagesBox__page} key={nanoid()}>{p}</div>
                 )
             })}</div>
-            <button onClick={increaseCurrentTenHandler}>+</button>
-            {/* <BsChevronRight/>
-            <BsChevronDoubleRight/> */}
-            <AiOutlineDoubleLeft/>
-            {/* <BiChevronsRight/>
-            <FaAngleDoubleRight/>
-            <HiChevronDoubleRight/> */}
-            <HiOutlineChevronDoubleRight/>
-            <HiOutlineChevronDoubleLeft/>
-            <HiOutlineChevronRight/>
-            <HiOutlineChevronLeft/>
+            <div onClick={increaseCurrentTenHandler} className={classes.iconWrapper}><HiOutlineChevronRight/></div>
+            <div onClick={setLastTenHandler} className={classes.iconWrapper}><HiOutlineChevronDoubleRight/></div>
         </div>
     )
 }
