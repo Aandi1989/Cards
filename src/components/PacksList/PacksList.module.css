@@ -1,13 +1,13 @@
 .main{
     height: 93vh;
     background: linear-gradient( rgb(230,212,222), rgb(25,118,210));
-    padding: 30px 0 100px;
+    padding: 30px 0;
     /* border:1px solid red; */
 }
 .container{
     /* border:1px solid green; */
     width: 70%;
-    max-height: calc(93vh - 130px);
+    max-height: calc(93vh - 60px);
     /* overflow: hidden; */
     margin: 0 auto;
     background-color:white;
@@ -144,4 +144,4 @@
 }
 .table__string__cards{
     margin-left: 15px;
-}
+} 

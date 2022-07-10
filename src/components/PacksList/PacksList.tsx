@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 import { PacksType, profileAPI } from "../../api/cards-api";
 import { InitialAuthStateType } from "../../Store/auth-reducer";
 import { getPacksTC } from "../../Store/packs-reducer";
@@ -27,9 +27,21 @@ export const PacksList=()=>{
     const {_id}=useSelector<AppRootStateType,ProfileDataStateType>(state=>state.profile)
     const dispatch=useAppDispatch()
 
+    const [searchParams,setSearchParams]=useSearchParams()
+    let userIdFromUrl=searchParams.get('userId')
+    console.log(Object.fromEntries(searchParams))
+    let urlParams=Object.fromEntries(searchParams)
+    // в запросе useEffect использовать параметры полученные из url строки , если какого-либо параметра нет то задаем его по 
+    // умолчании вытягивая из редакса либо просто задаем нужное нам по умолчанию значение
+    // let obj = {
+    //     month: 12,
+    //     day:   31,
+    // };
+    // let {year = 2025, month, day} = obj;
+
     useEffect(() => {
-            dispatch(getPacksTC({page:page, pageCount:pageCount}))
-        }, [])
+            dispatch(getPacksTC({page:page, pageCount:pageCount, user_id:userIdFromUrl}))
+        }, [searchParams])
 
     const setFocusOnInputHandler=(value:boolean)=>()=>{
         setFocusOnInput(value)
@@ -42,6 +54,13 @@ export const PacksList=()=>{
         dispatch(getPacksTC({page:page, pageCount:pageCount}))
         setCurrentPacksCategory('all')
     }
+    const setUserIdHandler=()=>{
+        setSearchParams({userId:`${_id}`})
+    }
+    const exampleHandler=()=>{
+        setSearchParams({...urlParams,example:'1'})
+    }
+    
 
     if (!isLoggedIn) {
         return <Navigate to={'/'} />
@@ -51,7 +70,7 @@ export const PacksList=()=>{
         <div className={classes.main}> 
             <div className={classes.container}>
                  <div className={classes.container__navbar}>
-                    <div className={classes.container__navbar__buttonsTitle}>Show packs cards</div>
+                    <div onClick={exampleHandler} className={classes.container__navbar__buttonsTitle}>Show packs cards</div>
                     <div className={classes.container__navbar__buttonsBox}>
                         <div onClick={getMyPacksHandler} 
                         className={currentPacksCategory=='my' ? classes.navbar__buttonBox__my_active : classes.navbar__buttonBox__my}>My</div>
@@ -64,7 +83,7 @@ export const PacksList=()=>{
                     } }/>
                  </div>
                 <div className={classes.container__packsBox}>
-                    <h3 className={classes.container__packsBox__title}>Packs list</h3>
+                    <h3  className={classes.container__packsBox__title}>Packs list</h3>
                     <div className={classes.container__packsBox__inputAddButtonBox}>
                         <div className={focusOnInput ? classes.packsBox__inputAddButtonBox__inputWrapper_active : 
                             classes.packsBox__inputAddButtonBox__inputWrapper}>
@@ -73,7 +92,7 @@ export const PacksList=()=>{
                             placeholder="Search..." type="text" />
                             <BsXLg style={{color:'rgb(176,173,191)', marginLeft:'3px'}} size='12px'/>
                         </div>
-                        <div className={classes.packsBox__inputAddButtonBox__addButton}>Add new pack</div>
+                        <div onClick={setUserIdHandler} className={classes.packsBox__inputAddButtonBox__addButton}>Add new pack</div>
                     </div>
                     <div className={classes.container__packsBox__table}>
                         <div className={classes.packsBox__table__header}>

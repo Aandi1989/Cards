@@ -75,7 +75,7 @@ export type GetPacksType={
    sortPacks?:string
    page?:number
    pageCount?:number
-   user_id?:string 
+   user_id?:string | null
 } 
 export type PacksType={
     cardPacks: PackType[]
