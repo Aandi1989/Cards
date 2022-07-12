@@ -73,7 +73,7 @@ export type GetPacksType={
    min?:number
    max?:number
    sortPacks?:string
-   page?:number
+   page?:number | string
    pageCount?:number
    user_id?:string | null
 } 

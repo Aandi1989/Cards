@@ -10,7 +10,11 @@ import { BiChevronsRight } from "react-icons/bi";
 import {FaAngleDoubleRight } from "react-icons/fa";
 import {HiChevronDoubleRight, HiOutlineChevronDoubleLeft, HiOutlineChevronDoubleRight, HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 
-export const Pagination = () => {
+type PaginationProspType={
+    getPacksFromPage:(values:number) => void
+}
+
+export const Pagination = (props:PaginationProspType) => {
     const { page, pageCount, cardPacksTotalCount } = useSelector<AppRootStateType, PacksType>(state => state.packs)
     let maxTen = Math.ceil(cardPacksTotalCount / pageCount / 10)
     let lastPage = Math.ceil(cardPacksTotalCount / pageCount)
@@ -42,13 +46,16 @@ export const Pagination = () => {
         setCurrentTen(maxTen)
     }
 
+
     return (
         <div className={classes.main}>
             <div onClick={setFirstTenHandler} className={classes.iconWrapper}><HiOutlineChevronDoubleLeft /></div>
             <div onClick={decreaseCurrentTenHandler} className={classes.iconWrapper}><HiOutlineChevronLeft/></div>
             <div className={classes.pagesBox}>{pages.map(p => {
                 return (
-                    <div className={p==page ? classes.pagesBox__page_active : classes.pagesBox__page} key={nanoid()}>{p}</div>
+                    <div 
+                    onClick={()=>props.getPacksFromPage(p)} 
+                    className={p==page ? classes.pagesBox__page_active : classes.pagesBox__page} key={nanoid()}>{p}</div>
                 )
             })}</div>
             <div onClick={increaseCurrentTenHandler} className={classes.iconWrapper}><HiOutlineChevronRight/></div>
