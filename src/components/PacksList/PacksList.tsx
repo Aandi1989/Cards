@@ -13,6 +13,7 @@ import { nanoid } from 'nanoid';
 import { changingDate } from "../../helper/ChahgingDate";
 import { ProfileDataStateType } from "../../Store/profile-reducer";
 import { Pagination } from "../Pagination/Pagination";
+import Arrow from '../../icons/arrow.png'
 
 
 
@@ -25,14 +26,17 @@ export const PacksList = () => {
     const { _id } = useSelector<AppRootStateType, ProfileDataStateType>(state => state.profile)
     const dispatch = useAppDispatch()
 
+    const [url, setUrl] = useState<string | null>('2')
+    console.log(url == ('1' || '2'))
+
     const [searchParams, setSearchParams] = useSearchParams()
     let params = Object.fromEntries(searchParams)
-    console.log(params)
-    let { userId, page = 1 } = params
+    let { userId, sortPacks, page = 1 } = params
+    console.log(params, sortPacks)
 
 
     useEffect(() => {
-        dispatch(getPacksTC({ page: page, pageCount: pageCount, user_id: userId }))
+        dispatch(getPacksTC({ user_id: userId, sortPacks: sortPacks, page: page, pageCount: pageCount }))
     }, [searchParams])
 
     const setFocusOnInputHandler = (value: boolean) => () => {
@@ -46,6 +50,13 @@ export const PacksList = () => {
     }
     const getPacksFromPage = (page: number) => {
         setSearchParams({ ...params, page: `${page}` })
+    }
+    const setSortPacksHandler = (currentSort: string, sort0: string, sort1: string) => () => {
+        if (currentSort == sort0) {
+            setSearchParams({ ...params, sortPacks: `${sort1}` })
+        } else {
+            setSearchParams({ ...params, sortPacks: `${sort0}` })
+        }
     }
 
     if (!isLoggedIn) {
@@ -84,9 +95,30 @@ export const PacksList = () => {
                         <div className={classes.container__packsBox__table}>
                             <div className={classes.packsBox__table__header}>
                                 <div className={classes.table__header__name}>Name</div>
-                                <div className={classes.table__header__cards}>Cards</div>
-                                <div className={classes.table__header__updated}>Last Updated</div>
-                                <div className={classes.table__header__created}>Created by</div>
+                                <div onClick={setSortPacksHandler(sortPacks, '0cardsCount', '1cardsCount')}
+                                    className={classes.table__header__cards}>
+                                    <div className={classes.header__cards__text}>Cards</div>
+                                    <div className={sortPacks == '0cardsCount' ? classes.header__cards__iconBox :
+                                        (sortPacks == '1cardsCount' ? classes.header__cards__iconBox_open : classes.header__cards__iconBox_closed)}>
+                                        <img src={Arrow} alt="Arrow" />
+                                    </div>
+                                </div>
+                                <div onClick={setSortPacksHandler(sortPacks, '0updated', '1updated')}
+                                    className={classes.table__header__updated}>
+                                    <div className={classes.header__udated__text}>Last Updated</div>
+                                    <div className={sortPacks == undefined ? classes.header__updated__iconBox : (sortPacks == '0updated' ?
+                                        classes.header__updated__iconBox : (sortPacks == '1updated' ? classes.header__updated__iconBox_open : classes.header__updated__iconBox_closed))}>
+                                        <img src={Arrow} alt="Arrow" />
+                                    </div>
+                                </div>
+                                <div onClick={setSortPacksHandler(sortPacks, '0created', '1created')}
+                                    className={classes.table__header__created}>
+                                    <div className={classes.header__created__text}>Created by</div>
+                                    <div className={sortPacks == '0created' ? classes.header__created__iconBox :
+                                        (sortPacks == '1created' ? classes.header__created__iconBox_open : classes.header__created__iconBox_closed)}>
+                                        <img src={Arrow} alt="Arrow" />
+                                    </div>
+                                </div>
                                 <div className={classes.table__header__actions}>Actions</div>
                             </div>
                             {cardPacks.map(pack => {
@@ -104,6 +136,7 @@ export const PacksList = () => {
                         </div>
                         <Pagination getPacksFromPage={getPacksFromPage} />
                     </div> : <div className={classes.container__packsBox__emptyBox}>No cards found</div>}
+                    <p className={url == '0' ? classes.class1 : (url == '1' ? classes.class2 : classes.class3)}>Nothing</p>
                 </div>
             </div>
         </div>
