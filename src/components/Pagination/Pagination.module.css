@@ -8,37 +8,37 @@
    
 }
 .pagesBox__page,.pagesBox__page_active{
-    width: 40px;
-    height: 30px;
-    line-height: 30px;
-    border-radius: 5px;
+    width: 30px;
+    height: 25px;
+    line-height: 25px;
+    border-radius: 4px;
     text-align: center;
-    margin-right: 5px;
+    margin-right: 4px;
 }
 .pagesBox__page_active{
     background-color: rgb(33,38,143);
     color:white;
 }
 .pagesBox__page:hover{
-    width: 40px;
-    height: 30px;
-    line-height: 30px;
-    border-radius: 5px;
+    width: 30px;
+    height: 25px;
+    line-height: 25px;
+    border-radius: 4px;
     text-align: center;
-    margin-right: 5px;
+    margin-right: 4px;
     color:white;
     background-color:rgb(182,190,219);
     transition: background-color 0.3s
 }
 .iconWrapper{
     display: flex;
-    border-radius: 5px;
+    border-radius: 4px;
     justify-content: center;
     align-items:center;
-    width: 40px;
-    height: 30px;
-    line-height: 30px;
-    margin-right: 5px;
+    width: 30px;
+    height: 25px;
+    line-height: 25px;
+    margin-right: 4px;
     cursor: pointer;
 }
 .iconWrapper:hover{

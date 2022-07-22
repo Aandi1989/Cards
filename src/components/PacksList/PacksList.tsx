@@ -21,19 +21,16 @@ import Arrow from '../../icons/arrow.png'
 export const PacksList = () => {
 
     const [focusOnInput, setFocusOnInput] = useState<Boolean>(false)
+    const [showPacksAmount, setShowPacksAmount] = useState<Boolean>(false)
+    const listAmount=[1,2,3,4,5,6,7,8,9,10]
     const { isInitialized, isLoggedIn } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
-    const { cardPacks, cardPacksTotalCount, maxCardsCount, minCardsCount, pageCount } = useSelector<AppRootStateType, PacksType>(state => state.packs)
+    const { cardPacks, cardPacksTotalCount, maxCardsCount, minCardsCount } = useSelector<AppRootStateType, PacksType>(state => state.packs)
     const { _id } = useSelector<AppRootStateType, ProfileDataStateType>(state => state.profile)
     const dispatch = useAppDispatch()
 
-    const [url, setUrl] = useState<string | null>('2')
-    console.log(url == ('1' || '2'))
-
     const [searchParams, setSearchParams] = useSearchParams()
     let params = Object.fromEntries(searchParams)
-    let { userId, sortPacks, page = 1 } = params
-    console.log(params, sortPacks)
-
+    let { userId, sortPacks, page = 1, pageCount = 10 } = params
 
     useEffect(() => {
         dispatch(getPacksTC({ user_id: userId, sortPacks: sortPacks, page: page, pageCount: pageCount }))
@@ -57,6 +54,16 @@ export const PacksList = () => {
         } else {
             setSearchParams({ ...params, sortPacks: `${sort0}` })
         }
+    }
+    const toogleShowPacksAmount = () => {
+        if (showPacksAmount) {
+            setShowPacksAmount(false)
+        } else {
+            setShowPacksAmount(true)
+        }
+    }
+    const setPageCountHandler=(amount:number)=>()=>{
+        setSearchParams({ ...params, pageCount: `${amount}` })
     }
 
     if (!isLoggedIn) {
@@ -134,9 +141,37 @@ export const PacksList = () => {
                                 )
                             })}
                         </div>
-                        <Pagination getPacksFromPage={getPacksFromPage} />
+                        <div className={classes.container__footer}>
+                            <div className={classes.container__footer__paginationBox}>
+                                <Pagination getPacksFromPage={getPacksFromPage} />
+                            </div>
+                            <div className={classes.container__footer__pagePopupBox}>
+                                <p className={classes.footer__pagePopupBox__leftText}>Show</p>
+                                <div onClick={toogleShowPacksAmount} className={classes.footer__pagePopupBox__amountBox}>
+                                    <div className={classes.pagePopupBox__amountBox__amount}>{pageCount}</div>
+                                    <div className={showPacksAmount ? classes.pagePopupBox__amountBox__icon_opened
+                                        : classes.pagePopupBox__amountBox__icon}>
+                                        <img src={Arrow} alt="" />
+                                    </div>
+                                    <div onClick={toogleShowPacksAmount}
+                                        className={showPacksAmount ? classes.pagePopupBox__amountBox__bg
+                                            : classes.pagePopupBox__amountBox__bg_none}>
+                                        
+                                    </div>
+                                    <div className={showPacksAmount?  classes.pagePopupBox__amountBox__listAmount
+                                    : classes.pagePopupBox__amountBox__listAmount_none}>
+                                            {listAmount.map(amount=>{
+                                                return(
+                                                    <div key={nanoid()} onClick={setPageCountHandler(amount)}
+                                                    className={classes.pagePopupBox__amountBox__listAmount__amount}>{amount}</div>
+                                                )
+                                            })}
+                                        </div>
+                                </div>
+                                <p className={classes.footer__pagePopupBox__rightText}>packs per page</p>
+                            </div>
+                        </div>
                     </div> : <div className={classes.container__packsBox__emptyBox}>No cards found</div>}
-                    <p className={url == '0' ? classes.class1 : (url == '1' ? classes.class2 : classes.class3)}>Nothing</p>
                 </div>
             </div>
         </div>
