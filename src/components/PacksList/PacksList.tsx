@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useSearchParams } from "react-router-dom";
 import { PacksType, profileAPI } from "../../api/cards-api";
@@ -14,6 +14,7 @@ import { changingDate } from "../../helper/ChahgingDate";
 import { ProfileDataStateType } from "../../Store/profile-reducer";
 import { Pagination } from "../Pagination/Pagination";
 import Arrow from '../../icons/arrow.png'
+import { debounce } from '../../common/Debounce/debounce';
 
 
 
@@ -22,6 +23,7 @@ export const PacksList = () => {
 
     const [focusOnInput, setFocusOnInput] = useState<Boolean>(false)
     const [showPacksAmount, setShowPacksAmount] = useState<Boolean>(false)
+    const [inputValue,setInputValue]=useState<string>('')
     const listAmount=[1,2,3,4,5,6,7,8,9,10]
     const { isInitialized, isLoggedIn } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
     const { cardPacks, cardPacksTotalCount, maxCardsCount, minCardsCount } = useSelector<AppRootStateType, PacksType>(state => state.packs)
@@ -30,10 +32,11 @@ export const PacksList = () => {
 
     const [searchParams, setSearchParams] = useSearchParams()
     let params = Object.fromEntries(searchParams)
-    let { userId, sortPacks, page = 1, pageCount = 10 } = params
+    
+    let { userId, sortPacks, packName, page = 1, pageCount = 10} = params
 
     useEffect(() => {
-        dispatch(getPacksTC({ user_id: userId, sortPacks: sortPacks, page: page, pageCount: pageCount }))
+        dispatch(getPacksTC({ user_id: userId, sortPacks: sortPacks,packName:packName ,page: page, pageCount: pageCount }))
     }, [searchParams])
 
     const setFocusOnInputHandler = (value: boolean) => () => {
@@ -65,6 +68,18 @@ export const PacksList = () => {
     const setPageCountHandler=(amount:number)=>()=>{
         setSearchParams({ ...params, pageCount: `${amount}` })
     }
+    const sortPacksByInputValue=(e: ChangeEvent<HTMLInputElement>)=>{
+        setInputValue(e.currentTarget.value)
+        setSearchParams({ ...params, packName: `${e.currentTarget.value}` })
+        console.log('hi')
+        // console.log(e.currentTarget.value,inputValue) почему будут разные значения в консоли и setSearchParams будет срабатывать 
+        // не так если туда передавать не e.currentTarget.value , а inputValue
+    }
+    const sortPacksByInputValueDebounce=(e: ChangeEvent<HTMLInputElement>)=>debounce(()=>sortPacksByInputValue(e))
+    
+    const clearInputValueHandler=()=>{
+        setInputValue('')
+    }
 
     if (!isLoggedIn) {
         return <Navigate to={'/'} />
@@ -93,8 +108,9 @@ export const PacksList = () => {
                             classes.packsBox__inputAddButtonBox__inputWrapper}>
                             <BiSearch style={{ color: 'rgb(176,173,191)', marginRight: '8px' }} size='20px' />
                             <input onFocus={setFocusOnInputHandler(true)} onBlur={setFocusOnInputHandler(false)}
-                                placeholder="Search..." type="text" />
-                            <BsXLg style={{ color: 'rgb(176,173,191)', marginLeft: '3px' }} size='12px' />
+                                placeholder="Search..." type="text" onChange={(e)=>sortPacksByInputValueDebounce(e)()} value={inputValue}/>
+                            <BsXLg onClick={clearInputValueHandler}
+                            style={{ color: 'rgb(176,173,191)', marginLeft: '3px',cursor:'pointer' }} size='12px' />
                         </div>
                         <div className={classes.packsBox__inputAddButtonBox__addButton}>Add new pack</div>
                     </div>
