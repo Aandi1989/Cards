@@ -14,7 +14,7 @@ import { changingDate } from "../../helper/ChahgingDate";
 import { ProfileDataStateType } from "../../Store/profile-reducer";
 import { Pagination } from "../Pagination/Pagination";
 import Arrow from '../../icons/arrow.png'
-import { debounce } from '../../common/Debounce/debounce';
+import { useDebounce } from '../../common/Debounce/debounce';
 
 
 
@@ -68,14 +68,14 @@ export const PacksList = () => {
     const setPageCountHandler=(amount:number)=>()=>{
         setSearchParams({ ...params, pageCount: `${amount}` })
     }
-    const sortPacksByInputValue=(e: ChangeEvent<HTMLInputElement>)=>{
-        setInputValue(e.currentTarget.value)
-        setSearchParams({ ...params, packName: `${e.currentTarget.value}` })
-        console.log('hi')
-        // console.log(e.currentTarget.value,inputValue) почему будут разные значения в консоли и setSearchParams будет срабатывать 
-        // не так если туда передавать не e.currentTarget.value , а inputValue
-    }
-    const sortPacksByInputValueDebounce=(e: ChangeEvent<HTMLInputElement>)=>debounce(()=>sortPacksByInputValue(e))
+  
+    const sortPacksByInputValueDebounce = useDebounce(inputValue, 2000)
+
+    useEffect(() => {
+        setSearchParams({ ...params, packName: `${sortPacksByInputValueDebounce}` })
+        
+    }, [sortPacksByInputValueDebounce])
+
     
     const clearInputValueHandler=()=>{
         setInputValue('')
@@ -108,7 +108,8 @@ export const PacksList = () => {
                             classes.packsBox__inputAddButtonBox__inputWrapper}>
                             <BiSearch style={{ color: 'rgb(176,173,191)', marginRight: '8px' }} size='20px' />
                             <input onFocus={setFocusOnInputHandler(true)} onBlur={setFocusOnInputHandler(false)}
-                                placeholder="Search..." type="text" onChange={(e)=>sortPacksByInputValueDebounce(e)()} value={inputValue}/>
+                                placeholder="Search..." type="text" onChange={ (e) => setInputValue(e.currentTarget.value)} 
+                                value={inputValue}/>
                             <BsXLg onClick={clearInputValueHandler}
                             style={{ color: 'rgb(176,173,191)', marginLeft: '3px',cursor:'pointer' }} size='12px' />
                         </div>

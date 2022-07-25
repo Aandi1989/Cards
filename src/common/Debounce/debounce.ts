@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-export const debounce = (fn:Function, ms = 2000) => {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    return function (this: any, ...args: any[]) {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => fn.apply(this, args), ms);
-    };
-  };
+export const useDebounce = (value: string, ms = 2000) => {
+
+  let [state, setState] = useState<string>()
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => setState(value), ms);
+    return () => clearTimeout(timeoutId)
+  }, [value])
+
+
+  return state
+};
