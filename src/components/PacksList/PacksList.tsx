@@ -68,13 +68,13 @@ export const PacksList = () => {
     const setPageCountHandler=(amount:number)=>()=>{
         setSearchParams({ ...params, pageCount: `${amount}` })
     }
-  
-    const sortPacksByInputValueDebounce = useDebounce(inputValue, 2000)
 
-    useEffect(() => {
-        setSearchParams({ ...params, packName: `${sortPacksByInputValueDebounce}` })
-        
-    }, [sortPacksByInputValueDebounce])
+    const fff = (value: any) => {
+    
+        setSearchParams({ ...params, packName: `${value}` })
+    }
+  
+    const debouncedFunc = useDebounce(fff, 2000)
 
     
     const clearInputValueHandler=()=>{
@@ -108,9 +108,15 @@ export const PacksList = () => {
                             classes.packsBox__inputAddButtonBox__inputWrapper}>
                             <BiSearch style={{ color: 'rgb(176,173,191)', marginRight: '8px' }} size='20px' />
                             <input onFocus={setFocusOnInputHandler(true)} onBlur={setFocusOnInputHandler(false)}
-                                placeholder="Search..." type="text" onChange={ (e) => setInputValue(e.currentTarget.value)} 
+                                placeholder="Search..." type="text" onChange={ (e) => {
+                                    setInputValue(e.currentTarget.value)
+                                    debouncedFunc(e.currentTarget.value)} }
                                 value={inputValue}/>
-                            <BsXLg onClick={clearInputValueHandler}
+                            <BsXLg onClick={() => {
+                                 setInputValue('')
+                                 debouncedFunc('')
+                                clearInputValueHandler()
+                            }}
                             style={{ color: 'rgb(176,173,191)', marginLeft: '3px',cursor:'pointer' }} size='12px' />
                         </div>
                         <div className={classes.packsBox__inputAddButtonBox__addButton}>Add new pack</div>

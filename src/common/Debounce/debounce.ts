@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 
-export const useDebounce = (value: string, ms = 2000) => {
-
-  let [state, setState] = useState<string>()
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => setState(value), ms);
-    return () => clearTimeout(timeoutId)
-  }, [value])
+export const useDebounce = (fn: (...args: any[]) => void, ms = 2000) => {
+  let [timeoutId, setTimeoutId] = useState<any | null>()
 
 
-  return state
+  const debouncedFunc = (...args: any[])  => {
+    if(timeoutId) clearTimeout(timeoutId)
+
+    const newTimeout = setTimeout(() => {
+      fn(...args)
+      if(newTimeout === timeoutId){
+        setTimeoutId(null)
+      }
+    }, ms);
+
+    setTimeoutId(newTimeout)
+  }
+
+  return debouncedFunc
 };
