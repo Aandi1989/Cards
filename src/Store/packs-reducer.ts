@@ -1,6 +1,7 @@
 import { Dispatch } from "redux"
-import { GetPacksType, PacksType, profileAPI } from "../api/cards-api"
+import { GetPacksType, PacksType, PostPackDataType, profileAPI } from "../api/cards-api"
 import { setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from "./app-reducer"
+import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
 const initialState : PacksType ={
     cardPacks:[],
@@ -43,4 +44,24 @@ export const getPacksTC = (data: GetPacksType) => (dispatch: Dispatch<ActionsTyp
         })
 }
 
-type ActionsType = ReturnType<typeof setPacksDataAC> | SetAppErrorActionType | SetAppStatusActionType
+export const postPackTC = (data: PostPackDataType) => (dispatch: Dispatch<ActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
+    profileAPI.postPack(data)
+        .then(res => {
+            console.log(res)
+            if (res.status == 201) {
+                // dispatch(getPacksTC({}))
+                  dispatch(setAppStatusAC('succeeded'))
+            } else {
+                dispatch(setAppErrorAC('Some server error occurred'))
+                dispatch(setAppStatusAC('failed'))
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+            dispatch(setAppErrorAC(error.message ? error.message : 'Some network error occurred'))
+            dispatch(setAppStatusAC('failed'))
+        })
+}
+
+type ActionsType = ReturnType<typeof setPacksDataAC> | SetAppErrorActionType | SetAppStatusActionType 

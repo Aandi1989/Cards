@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Navigate, useSearchParams } from "react-router-dom";
 import { PacksType, profileAPI } from "../../api/cards-api";
 import { InitialAuthStateType } from "../../Store/auth-reducer";
-import { getPacksTC } from "../../Store/packs-reducer";
+import { getPacksTC, postPackTC } from "../../Store/packs-reducer";
 import { AppRootStateType, useAppDispatch } from "../../Store/store";
 import { RangeSlider } from "../RangeSlider/RangeSlider";
 import classes from './PacksList.module.css';
@@ -23,22 +23,27 @@ export const PacksList = () => {
 
     const [focusOnInput, setFocusOnInput] = useState<Boolean>(false)
     const [showPacksAmount, setShowPacksAmount] = useState<Boolean>(false)
-    const [inputValue,setInputValue]=useState<string>('')
-    const listAmount=[1,2,3,4,5,6,7,8,9,10]
+    const [inputValue, setInputValue] = useState<string>('')
+    const listAmount = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     const { isInitialized, isLoggedIn } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
     const { cardPacks, cardPacksTotalCount, maxCardsCount, minCardsCount } = useSelector<AppRootStateType, PacksType>(state => state.packs)
     const { _id } = useSelector<AppRootStateType, ProfileDataStateType>(state => state.profile)
     const dispatch = useAppDispatch()
-
     const [searchParams, setSearchParams] = useSearchParams()
     let params = Object.fromEntries(searchParams)
-    
-    let { userId, sortPacks, packName, page = 1, pageCount = 10, min=minCardsCount, max=maxCardsCount} = params
-    
+
+    let { userId, sortPacks, packName, page = 1, pageCount = 10, min = minCardsCount, max = maxCardsCount } = params
+
     useEffect(() => {
-        dispatch(getPacksTC({ user_id: userId, sortPacks: sortPacks, packName:packName ,page: page, pageCount: pageCount,
-             min:min, max:max}))
+        dispatch(getPacksTC({
+            user_id: userId, sortPacks: sortPacks, packName: packName, page: page, pageCount: pageCount,
+            min: min, max: max
+        }))
     }, [searchParams])
+
+    const examplePostRequest = () =>{
+        dispatch(postPackTC({name:'New pack'}))
+    }
 
     const setFocusOnInputHandler = (value: boolean) => () => {
         setFocusOnInput(value)
@@ -68,7 +73,7 @@ export const PacksList = () => {
             setShowPacksAmount(true)
         }
     }
-    const setPageCountHandler=(amount:number)=>()=>{
+    const setPageCountHandler = (amount: number) => () => {
         setSearchParams({ ...params, pageCount: `${amount}` })
     }
 
@@ -76,15 +81,14 @@ export const PacksList = () => {
         setSearchParams({ ...params, packName: `${value}` })
     }
 
-    const setMinMaxCardsValues = (values:number[])=>{
-        setSearchParams({...params, min:`${values[0]}`,max:`${values[1]}`})
+    const setMinMaxCardsValues = (values: number[]) => {
+        setSearchParams({ ...params, min: `${values[0]}`, max: `${values[1]}` })
     }
-  
-    const debouncedSearchByInputValue = useDebounce(setPackName, 2000)
-    const debounceSearchByMinMaxValue = useDebounce(setMinMaxCardsValues,2000)
 
-    
-    const clearInputValueHandler=()=>{
+    const debouncedSearchByInputValue = useDebounce(setPackName, 2000)
+    const debounceSearchByMinMaxValue = useDebounce(setMinMaxCardsValues, 2000)
+
+    const clearInputValueHandler = () => {
         debouncedSearchByInputValue('')
         setInputValue('')
     }
@@ -114,14 +118,16 @@ export const PacksList = () => {
                             classes.packsBox__inputAddButtonBox__inputWrapper}>
                             <BiSearch style={{ color: 'rgb(176,173,191)', marginRight: '8px' }} size='20px' />
                             <input onFocus={setFocusOnInputHandler(true)} onBlur={setFocusOnInputHandler(false)}
-                                placeholder="Search..." type="text" onChange={ (e) => {
+                                placeholder="Search..." type="text" onChange={(e) => {
                                     setInputValue(e.currentTarget.value)
-                                    debouncedSearchByInputValue(e.currentTarget.value)} }
-                                value={inputValue}/>
+                                    debouncedSearchByInputValue(e.currentTarget.value)
+                                }}
+                                value={inputValue} />
                             <BsXLg onClick={clearInputValueHandler}
-                            style={{ color: 'rgb(176,173,191)', marginLeft: '3px',cursor:'pointer' }} size='12px' />
+                                style={{ color: 'rgb(176,173,191)', marginLeft: '3px', cursor: 'pointer' }} size='12px' />
                         </div>
-                        <div className={classes.packsBox__inputAddButtonBox__addButton}>Add new pack</div>
+                        <div onClick={examplePostRequest}
+                        className={classes.packsBox__inputAddButtonBox__addButton}>Add new pack</div>
                     </div>
                     {cardPacks.length > 0 ? <div className={classes.container__packsBox__tablePageBox}>
                         <div className={classes.container__packsBox__table}>
@@ -161,7 +167,14 @@ export const PacksList = () => {
                                         <div className={classes.table__string__cards}>{pack.cardsCount}</div>
                                         <div className={classes.table__string__updated}>{updated}</div>
                                         <div className={classes.table__string__created}>{pack.user_name}</div>
-                                        <div className={classes.table__string__actions}>---</div>
+                                        {pack.cardsCount > 0 ? <div className={classes.table__string__actions}>
+
+                                            {pack.user_id == _id ?
+                                                <div className={classes.table__string__actions__delete}>Delete</div> : null}
+                                            {pack.user_id == _id ?
+                                                <div className={classes.table__string__actions__edit}>Edit</div> : null}
+                                            <div className={classes.table__string__actions__learn}>Learn</div>
+                                        </div> : null}
                                     </div>
                                 )
                             })}
@@ -181,17 +194,17 @@ export const PacksList = () => {
                                     <div onClick={toogleShowPacksAmount}
                                         className={showPacksAmount ? classes.pagePopupBox__amountBox__bg
                                             : classes.pagePopupBox__amountBox__bg_none}>
-                                        
+
                                     </div>
-                                    <div className={showPacksAmount?  classes.pagePopupBox__amountBox__listAmount
-                                    : classes.pagePopupBox__amountBox__listAmount_none}>
-                                            {listAmount.map(amount=>{
-                                                return(
-                                                    <div key={nanoid()} onClick={setPageCountHandler(amount)}
+                                    <div className={showPacksAmount ? classes.pagePopupBox__amountBox__listAmount
+                                        : classes.pagePopupBox__amountBox__listAmount_none}>
+                                        {listAmount.map(amount => {
+                                            return (
+                                                <div key={nanoid()} onClick={setPageCountHandler(amount)}
                                                     className={classes.pagePopupBox__amountBox__listAmount__amount}>{amount}</div>
-                                                )
-                                            })}
-                                        </div>
+                                            )
+                                        })}
+                                    </div>
                                 </div>
                                 <p className={classes.footer__pagePopupBox__rightText}>packs per page</p>
                             </div>

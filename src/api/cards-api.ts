@@ -31,6 +31,9 @@ const forgotData={
 export const profileAPI={
     getPacks(data:GetPacksType){
         return instance.get<GetPacksType,AxiosResponse<PacksType>>(`cards/pack`,{ params: data })
+    },
+    postPack(data:PostPackDataType){
+        return instance.post<PostPackDataType,AxiosResponse<PostPackAnswerType>>(`cards/pack`,{cardsPack:data})
     }
 }
 
@@ -104,3 +107,18 @@ export type PackType={
     __v: number
     _id: string
 } 
+export type PostPackDataType={
+    name?:string
+    path?:string
+    grade?:number
+    shots?:number
+    rating?:number
+    deckCover?:string
+    private?:boolean
+    type?:string
+}
+export type PostPackAnswerType={
+    newCardPack:PackType
+    token:string
+    tokenDeathTime:number
+}

@@ -120,7 +120,7 @@
 }
 .packsBox__table__header{
     display: grid;
-    grid-template-columns: 3fr 1fr 2fr 2fr 2fr;
+    grid-template-columns: 2fr 1fr 2fr 2fr 2fr;
     height: 40px;
     line-height: 40px;
     background-color: rgb(236,236,249);
@@ -166,7 +166,7 @@
 }
 .table__string__wrapper{
     display: grid;
-    grid-template-columns: 3fr 1fr 2fr 2fr 2fr;
+    grid-template-columns: 2fr 1fr 2fr 2fr 2fr;
     line-height: 35px;
     height: 35px;
     font-size: 14px;
@@ -174,9 +174,36 @@
 .table__string__wrapper:nth-child(odd){
     background-color: rgb(236,236,249);
 }
-.table__string__cards{
+.table__string__cards,.table__string__updated{
     margin-left: 15px;
 } 
+.table__string__actions{
+    display: flex;
+    justify-content: flex-end;
+    align-items:center;
+    padding-right: 20px;
+}
+.table__string__actions__delete,.table__string__actions__edit, .table__string__actions__learn{
+width: 50px;
+height: 22px;
+line-height: 22px;
+text-align: center;
+border-radius:3px;
+}
+.table__string__actions__delete{
+    background-color:rgb(241,69,61);
+    color:white;
+}
+.table__string__actions__edit,.table__string__actions__learn{
+    background-color:rgb(215,216,239);
+    color:rgb(33,38,143);
+    margin-left: 8px;
+}
+.table__string__actions__delete:hover,.table__string__actions__edit:hover, .table__string__actions__learn:hover{
+    box-shadow: 0px 0px 10px 1px rgba(97, 97, 97, 0.144);
+    cursor: pointer; 
+    transition: box-shadow 0.2s ;
+}
 .container__packsBox__emptyBox{
     font-size: 20px;
     /* border:1px solid red; */
