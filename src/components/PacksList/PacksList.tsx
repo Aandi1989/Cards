@@ -33,10 +33,11 @@ export const PacksList = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     let params = Object.fromEntries(searchParams)
     
-    let { userId, sortPacks, packName, page = 1, pageCount = 10} = params
-
+    let { userId, sortPacks, packName, page = 1, pageCount = 10, min=minCardsCount, max=maxCardsCount} = params
+    
     useEffect(() => {
-        dispatch(getPacksTC({ user_id: userId, sortPacks: sortPacks,packName:packName ,page: page, pageCount: pageCount }))
+        dispatch(getPacksTC({ user_id: userId, sortPacks: sortPacks, packName:packName ,page: page, pageCount: pageCount,
+             min:min, max:max}))
     }, [searchParams])
 
     const setFocusOnInputHandler = (value: boolean) => () => {
@@ -44,9 +45,11 @@ export const PacksList = () => {
     }
     const getMyPacksHandler = () => {
         setSearchParams({ userId: `${_id}` })
+        setInputValue('')
     }
     const getAllPacksHandler = () => {
         setSearchParams({})
+        setInputValue('')
     }
     const getPacksFromPage = (page: number) => {
         setSearchParams({ ...params, page: `${page}` })
@@ -69,15 +72,20 @@ export const PacksList = () => {
         setSearchParams({ ...params, pageCount: `${amount}` })
     }
 
-    const fff = (value: any) => {
-    
+    const setPackName = (value: any) => {
         setSearchParams({ ...params, packName: `${value}` })
     }
+
+    const setMinMaxCardsValues = (values:number[])=>{
+        setSearchParams({...params, min:`${values[0]}`,max:`${values[1]}`})
+    }
   
-    const debouncedFunc = useDebounce(fff, 2000)
+    const debouncedSearchByInputValue = useDebounce(setPackName, 2000)
+    const debounceSearchByMinMaxValue = useDebounce(setMinMaxCardsValues,2000)
 
     
     const clearInputValueHandler=()=>{
+        debouncedSearchByInputValue('')
         setInputValue('')
     }
 
@@ -97,9 +105,7 @@ export const PacksList = () => {
                             className={userId ? classes.navbar__buttonBox__all : classes.navbar__buttonBox__all_active}>All</div>
                     </div>
                     <div className={classes.container__navbar__rangeTitle}>Number of cards</div>
-                    <RangeSlider maxCardsCount={maxCardsCount} minCardsCount={minCardsCount} onChangeCommitted={function (values: number[]): void {
-                        throw new Error("Function not implemented.");
-                    }} />
+                    <RangeSlider maxCardsCount={maxCardsCount} minCardsCount={minCardsCount} onChangeCommitted={debounceSearchByMinMaxValue} />
                 </div>
                 <div className={classes.container__packsBox}>
                     <h3 className={classes.container__packsBox__title}>Packs list</h3>
@@ -110,13 +116,9 @@ export const PacksList = () => {
                             <input onFocus={setFocusOnInputHandler(true)} onBlur={setFocusOnInputHandler(false)}
                                 placeholder="Search..." type="text" onChange={ (e) => {
                                     setInputValue(e.currentTarget.value)
-                                    debouncedFunc(e.currentTarget.value)} }
+                                    debouncedSearchByInputValue(e.currentTarget.value)} }
                                 value={inputValue}/>
-                            <BsXLg onClick={() => {
-                                 setInputValue('')
-                                 debouncedFunc('')
-                                clearInputValueHandler()
-                            }}
+                            <BsXLg onClick={clearInputValueHandler}
                             style={{ color: 'rgb(176,173,191)', marginLeft: '3px',cursor:'pointer' }} size='12px' />
                         </div>
                         <div className={classes.packsBox__inputAddButtonBox__addButton}>Add new pack</div>

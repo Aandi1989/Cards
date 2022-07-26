@@ -6,7 +6,6 @@ export const useDebounce = (fn: (...args: any[]) => void, ms = 2000) => {
 
   const debouncedFunc = (...args: any[])  => {
     if(timeoutId) clearTimeout(timeoutId)
-
     const newTimeout = setTimeout(() => {
       fn(...args)
       if(newTimeout === timeoutId){
@@ -16,6 +15,5 @@ export const useDebounce = (fn: (...args: any[]) => void, ms = 2000) => {
 
     setTimeoutId(newTimeout)
   }
-
   return debouncedFunc
 };

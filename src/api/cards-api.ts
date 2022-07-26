@@ -70,8 +70,8 @@ export type RegisterType={
 }
 export type GetPacksType={
    packName?:string
-   min?:number
-   max?:number
+   min?:number | string
+   max?:number | string
    sortPacks?:string
    page?:number | string
    pageCount?:number | string

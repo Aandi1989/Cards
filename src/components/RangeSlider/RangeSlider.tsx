@@ -11,8 +11,8 @@ import {useSelector} from 'react-redux';
 
 export type RangeSliderType = {
     // dispatch: Dispatch
-    maxCardsCount: number
-    minCardsCount: number
+    maxCardsCount: number 
+    minCardsCount: number 
     onChangeCommitted: (values: number[]) => void
 }
 const CustomSlider = styled(Slider)({
