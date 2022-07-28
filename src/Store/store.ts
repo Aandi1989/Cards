@@ -5,12 +5,14 @@ import { authReducer } from "./auth-reducer";
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk'
 import { profileReducer } from "./profile-reducer";
 import { packsReducer } from "./packs-reducer";
+import { urlParamsReducer } from "./urlParams-reducer";
 
 const rootReducers=combineReducers({
     app:appReducer,
     auth:authReducer,
     profile:profileReducer,
-    packs:packsReducer
+    packs:packsReducer,
+    urlParams:urlParamsReducer
 })
 
 export const store=createStore(rootReducers,applyMiddleware(thunk))
@@ -21,5 +23,5 @@ export type AppRootStateType = ReturnType<typeof rootReducers>
 export type AppDispatch = typeof store.dispatch
 export const useAppDispatch = () => useDispatch<ThunkDispatch<AppRootStateType,unknown,AnyAction>>()
 
-// export type AppThunk<ReturnType = void> = ThunkAction<ReturnType,AppRootStateType,unknown,AnyAction>
-// начинал писать чтобы внутри санки задиспатчить другую санку по примеру Валеры
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType,AppRootStateType,unknown,AnyAction>
+// we created that type to be able dispacth thunk inside other thunk

@@ -1,7 +1,8 @@
 import { Dispatch } from "redux"
-import { GetPacksType, PacksType, PostPackDataType, profileAPI } from "../api/cards-api"
+import { GetPacksType, PacksType, PostPackDataType, profileAPI, PutPackDataType } from "../api/cards-api"
 import { setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from "./app-reducer"
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk'
+import { AppThunk } from "./store"
 
 const initialState : PacksType ={
     cardPacks:[],
@@ -44,14 +45,54 @@ export const getPacksTC = (data: GetPacksType) => (dispatch: Dispatch<ActionsTyp
         })
 }
 
-export const postPackTC = (data: PostPackDataType) => (dispatch: Dispatch<ActionsType>) => {
+export const postPackTC = (data: PostPackDataType):AppThunk => (dispatch,getState) => {
     dispatch(setAppStatusAC('loading'))
+    const {userId,sortPacks,packName,page,pageCount,min,max} = getState().urlParams
     profileAPI.postPack(data)
         .then(res => {
             console.log(res)
             if (res.status == 201) {
-                // dispatch(getPacksTC({}))
-                  dispatch(setAppStatusAC('succeeded'))
+                dispatch(getPacksTC({user_id:userId,sortPacks,packName,page,pageCount,min,max}))
+            } else {
+                dispatch(setAppErrorAC('Some server error occurred'))
+                dispatch(setAppStatusAC('failed'))
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+            dispatch(setAppErrorAC(error.message ? error.message : 'Some network error occurred'))
+            dispatch(setAppStatusAC('failed'))
+        })
+}
+
+export const putPackTC = (data: PutPackDataType):AppThunk => (dispatch,getState) => {
+    dispatch(setAppStatusAC('loading'))
+    const {userId,sortPacks,packName,page,pageCount,min,max} = getState().urlParams
+    profileAPI.putPack(data)
+        .then(res => {
+            console.log(res)
+            if (res.status == 200) {
+                dispatch(getPacksTC({user_id:userId,sortPacks,packName,page,pageCount,min,max}))
+            } else {
+                dispatch(setAppErrorAC('Some server error occurred'))
+                dispatch(setAppStatusAC('failed'))
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+            dispatch(setAppErrorAC(error.message ? error.message : 'Some network error occurred'))
+            dispatch(setAppStatusAC('failed'))
+        })
+}
+
+export const deletePackTC = (packId:string):AppThunk => (dispatch,getState) => {
+    dispatch(setAppStatusAC('loading'))
+    const {userId,sortPacks,packName,page,pageCount,min,max} = getState().urlParams
+    profileAPI.deletePack(packId)
+        .then(res => {
+            // console.log(res)
+            if (res.status == 200) {
+                dispatch(getPacksTC({user_id:userId,sortPacks,packName,page,pageCount,min,max}))
             } else {
                 dispatch(setAppErrorAC('Some server error occurred'))
                 dispatch(setAppStatusAC('failed'))

@@ -5,7 +5,6 @@ import { Register } from './components/Register/Register';
 import { ForgotPassword } from './components/ForgotPassword/ForgotPassword';
 import { CheckEmail } from './components/CheckEmail/CheckEmail';
 import { CreatePassword } from './components/CreatePassword/CreatePassword';
-import { Profile } from './components/Profile/Profile'
 import { AppRootStateType, useAppDispatch } from './Store/store';
 import { authTC, InitialAuthStateType } from './Store/auth-reducer';
 import { useSelector } from 'react-redux';

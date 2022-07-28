@@ -24,8 +24,8 @@ export const authAPI={
     }
 }
 const forgotData={
-    email:'',
-    from:'aliaksandr.novik2021@gmail.com',
+    email:'eugene.novik.dev@gmail.com',
+    from:'',
     message:`<div>Password recovery <a href='http://localhost:3000/set-new-password/$token'><a/></div>`
 }
 export const profileAPI={
@@ -34,6 +34,12 @@ export const profileAPI={
     },
     postPack(data:PostPackDataType){
         return instance.post<PostPackDataType,AxiosResponse<PostPackAnswerType>>(`cards/pack`,{cardsPack:data})
+    },
+    putPack(data:PutPackDataType){
+        return instance.put<PutPackDataType,AxiosResponse<PutPackAnswerType>>(`cards/pack`,{cardsPack:data})
+    },
+    deletePack(packId:string){
+        return instance.delete<AxiosResponse<DeletePackAnswerType>>(`cards/pack?id=${packId}`)
     }
 }
 
@@ -119,6 +125,20 @@ export type PostPackDataType={
 }
 export type PostPackAnswerType={
     newCardPack:PackType
+    token:string
+    tokenDeathTime:number
+}
+export type PutPackDataType={
+    _id:string
+    name?:string
+}
+export type PutPackAnswerType={
+    updatedCardsPack:PackType
+    token:string
+    tokenDeathTime:number
+}
+export type DeletePackAnswerType={
+    deletedCardsPack:PackType
     token:string
     tokenDeathTime:number
 }

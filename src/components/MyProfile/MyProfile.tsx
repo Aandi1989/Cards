@@ -16,7 +16,7 @@ export const MyProfile=()=>{
     const { isInitialized, isLoggedIn } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
     // console.log(name,email,avatar)
     const packs=useSelector<AppRootStateType,PacksType>(state=>state.packs)
-    console.log(packs)
+    // console.log(packs)
 
     if (!isLoggedIn) {
         return <Navigate to={'/'} />
