@@ -6,13 +6,15 @@ import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk'
 import { profileReducer } from "./profile-reducer";
 import { packsReducer } from "./packs-reducer";
 import { urlParamsReducer } from "./urlParams-reducer";
+import { cardsReducer } from "./cards-reducer";
 
 const rootReducers=combineReducers({
     app:appReducer,
     auth:authReducer,
     profile:profileReducer,
     packs:packsReducer,
-    urlParams:urlParamsReducer
+    urlParams:urlParamsReducer,
+    cards:cardsReducer
 })
 
 export const store=createStore(rootReducers,applyMiddleware(thunk))

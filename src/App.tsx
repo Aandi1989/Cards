@@ -14,6 +14,7 @@ import { Route, Routes, Navigate, Outlet } from 'react-router-dom';
 import { Header } from './components/Header/Header';
 import { MyProfile } from './components/MyProfile/MyProfile';
 import { PacksList } from './components/PacksList/PacksList';
+import { Pack } from './components/Pack/Pack';
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
                 <Route path='/' element={<MyProfile/>}/>
                 <Route path='/myprofile' element={<MyProfile/>}/>
                 <Route path='/packsList' element={<PacksList/>}/>
+                <Route path='/pack/:packId' element={<Pack/>}/>
                 <Route path='*' element={<p>Error 404. Incorrect URL.</p>}/>
             </Routes>
           </div>

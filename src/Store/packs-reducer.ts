@@ -1,5 +1,5 @@
 import { Dispatch } from "redux"
-import { GetPacksType, PacksType, PostPackDataType, profileAPI, PutPackDataType } from "../api/cards-api"
+import { GetPacksType, PacksType, PostPackDataType, packsAPI, PutPackDataType } from "../api/cards-api"
 import { setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from "./app-reducer"
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk'
 import { AppThunk } from "./store"
@@ -12,23 +12,27 @@ const initialState : PacksType ={
     page: 1,
     pageCount: 10,
     token: '',
-    tokenDeathTime: 0
+    tokenDeathTime: 0,
+    
 }
 
 export const packsReducer = (state:PacksType = initialState, action: ActionsType): PacksType => {
     switch (action.type) {
         case 'SET-PACKS-DATA':
             return { ...state,...action.packs }
+        case 'SET-CURRENT-PACK-NAME':
+                return{...state,currentPackName:action.name}
         default:
             return state
     }
 }
 
 export const setPacksDataAC = (packs: PacksType) => ({ type: 'SET-PACKS-DATA', packs } as const)
+export const setCurrentPackNameAC=(name:string)=>({type:'SET-CURRENT-PACK-NAME', name} as const )
 
 export const getPacksTC = (data: GetPacksType) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
-    profileAPI.getPacks(data)
+    packsAPI.getPacks(data)
         .then(res => {
             // console.log(res)
             if (res.status == 200) {
@@ -48,9 +52,9 @@ export const getPacksTC = (data: GetPacksType) => (dispatch: Dispatch<ActionsTyp
 export const postPackTC = (data: PostPackDataType):AppThunk => (dispatch,getState) => {
     dispatch(setAppStatusAC('loading'))
     const {userId,sortPacks,packName,page,pageCount,min,max} = getState().urlParams
-    profileAPI.postPack(data)
+    packsAPI.postPack(data)
         .then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.status == 201) {
                 dispatch(getPacksTC({user_id:userId,sortPacks,packName,page,pageCount,min,max}))
             } else {
@@ -68,7 +72,7 @@ export const postPackTC = (data: PostPackDataType):AppThunk => (dispatch,getStat
 export const putPackTC = (data: PutPackDataType):AppThunk => (dispatch,getState) => {
     dispatch(setAppStatusAC('loading'))
     const {userId,sortPacks,packName,page,pageCount,min,max} = getState().urlParams
-    profileAPI.putPack(data)
+    packsAPI.putPack(data)
         .then(res => {
             console.log(res)
             if (res.status == 200) {
@@ -88,7 +92,7 @@ export const putPackTC = (data: PutPackDataType):AppThunk => (dispatch,getState)
 export const deletePackTC = (packId:string):AppThunk => (dispatch,getState) => {
     dispatch(setAppStatusAC('loading'))
     const {userId,sortPacks,packName,page,pageCount,min,max} = getState().urlParams
-    profileAPI.deletePack(packId)
+    packsAPI.deletePack(packId)
         .then(res => {
             // console.log(res)
             if (res.status == 200) {
@@ -105,4 +109,7 @@ export const deletePackTC = (packId:string):AppThunk => (dispatch,getState) => {
         })
 }
 
-type ActionsType = ReturnType<typeof setPacksDataAC> | SetAppErrorActionType | SetAppStatusActionType 
+export type SetCurrentPackNameActionType = ReturnType<typeof setCurrentPackNameAC>
+export type setPacksDataActionType = ReturnType<typeof setPacksDataAC>
+
+type ActionsType = setPacksDataActionType | SetCurrentPackNameActionType | SetAppErrorActionType | SetAppStatusActionType 

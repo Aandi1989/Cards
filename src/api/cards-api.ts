@@ -6,87 +6,93 @@ export const instance = axios.create({
     withCredentials: true
 })
 
-export const authAPI={
-    me(){ 
+export const authAPI = {
+    me() {
         return instance.post<UserType>(`auth/me`)
     },
-    login(data:LoginDataType){
-        return instance.post<LoginDataType,AxiosResponse<UserType>>(`auth/login`,data)
+    login(data: LoginDataType) {
+        return instance.post<LoginDataType, AxiosResponse<UserType>>(`auth/login`, data)
     },
-    logout(){
+    logout() {
         return instance.delete<LogoutType>(`auth/me`)
     },
-    register(data:LoginDataType){
-        return instance.post<LoginDataType,AxiosResponse<RegisterType>>(`auth/register`,data)
+    register(data: LoginDataType) {
+        return instance.post<LoginDataType, AxiosResponse<RegisterType>>(`auth/register`, data)
     },
-    forgot(email:string){
-        return instance.post<ForgotPasswordType>('auth/forgot',{...forgotData,email:email})
+    forgot(email: string) {
+        return instance.post<ForgotPasswordType>('auth/forgot', { ...forgotData, email: email })
     }
 }
-const forgotData={
-    email:'eugene.novik.dev@gmail.com',
-    from:'',
-    message:`<div>Password recovery <a href='http://localhost:3000/set-new-password/$token'><a/></div>`
+const forgotData = {
+    email: 'eugene.novik.dev@gmail.com',
+    from: '',
+    message: `<div>Password recovery <a href='http://localhost:3000/set-new-password/$token'><a/></div>`
 }
-export const profileAPI={
-    getPacks(data:GetPacksType){
-        return instance.get<GetPacksType,AxiosResponse<PacksType>>(`cards/pack`,{ params: data })
+export const packsAPI = {
+    getPacks(data: GetPacksType) {
+        return instance.get<GetPacksType, AxiosResponse<PacksType>>(`cards/pack`, { params: data })
     },
-    postPack(data:PostPackDataType){
-        return instance.post<PostPackDataType,AxiosResponse<PostPackAnswerType>>(`cards/pack`,{cardsPack:data})
+    postPack(data: PostPackDataType) {
+        return instance.post<PostPackDataType, AxiosResponse<PostPackAnswerType>>(`cards/pack`, { cardsPack: data })
     },
-    putPack(data:PutPackDataType){
-        return instance.put<PutPackDataType,AxiosResponse<PutPackAnswerType>>(`cards/pack`,{cardsPack:data})
+    putPack(data: PutPackDataType) {
+        return instance.put<PutPackDataType, AxiosResponse<PutPackAnswerType>>(`cards/pack`, { cardsPack: data })
     },
-    deletePack(packId:string){
+    deletePack(packId: string) {
         return instance.delete<AxiosResponse<DeletePackAnswerType>>(`cards/pack?id=${packId}`)
     }
 }
 
-//types
-export type LoginDataType={
-    email:string
-    password:string
-    rememberMe?:boolean
+export const cardsAPI = {
+    getCards(data: GetCardsDataType) {
+        return instance.get<GetCardsDataType, AxiosResponse<CardsType>>(`cards/card`, { params: data })
+    }
 }
-export type ForgotPasswordType={
+
+//types
+export type LoginDataType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+}
+export type ForgotPasswordType = {
     answer: boolean
     html: boolean
     info: string
     success: boolean
 }
-export type LogoutType={
-    info:string
-    error?:string
+export type LogoutType = {
+    info: string
+    error?: string
 }
-export type UserType={
-        avatar?: string
-        created:string
-        email: string
-        isAdmin: boolean
-        name: string
-        publicCardPacksCount: number
-        rememberMe: boolean
-        token?: string
-        tokenDeathTime?: number
-        updated: string
-        verified: boolean
-        __v: number
-        _id: string
-    }
-export type RegisterType={
-    addedUser:UserType
+export type UserType = {
+    avatar?: string
+    created: string
+    email: string
+    isAdmin: boolean
+    name: string
+    publicCardPacksCount: number
+    rememberMe: boolean
+    token?: string
+    tokenDeathTime?: number
+    updated: string
+    verified: boolean
+    __v: number
+    _id: string
 }
-export type GetPacksType={
-   packName?:string
-   min?:number | string
-   max?:number | string
-   sortPacks?:string
-   page?:number | string
-   pageCount?:number | string
-   user_id?:string | null
-} 
-export type PacksType={
+export type RegisterType = {
+    addedUser: UserType
+}
+export type GetPacksType = {
+    packName?: string
+    min?: number | string
+    max?: number | string
+    sortPacks?: string
+    page?: number | string
+    pageCount?: number | string
+    user_id?: string | null
+}
+export type PacksType = {
     cardPacks: PackType[]
     cardPacksTotalCount: number
     maxCardsCount: number
@@ -95,8 +101,9 @@ export type PacksType={
     pageCount: number
     token: string
     tokenDeathTime: number
-}  
-export type PackType={
+    currentPackName?:string
+}
+export type PackType = {
     cardsCount: number
     created: string
     grade: number
@@ -112,33 +119,67 @@ export type PackType={
     user_name: string
     __v: number
     _id: string
-} 
-export type PostPackDataType={
-    name?:string
-    path?:string
-    grade?:number
-    shots?:number
-    rating?:number
-    deckCover?:string
-    private?:boolean
-    type?:string
 }
-export type PostPackAnswerType={
-    newCardPack:PackType
-    token:string
-    tokenDeathTime:number
+export type PostPackDataType = {
+    name?: string
+    path?: string
+    grade?: number
+    shots?: number
+    rating?: number
+    deckCover?: string
+    private?: boolean
+    type?: string
 }
-export type PutPackDataType={
-    _id:string
-    name?:string
+export type PostPackAnswerType = {
+    newCardPack: PackType
+    token: string
+    tokenDeathTime: number
 }
-export type PutPackAnswerType={
-    updatedCardsPack:PackType
-    token:string
-    tokenDeathTime:number
+export type PutPackDataType = {
+    _id: string
+    name?: string
 }
-export type DeletePackAnswerType={
-    deletedCardsPack:PackType
-    token:string
-    tokenDeathTime:number
+export type PutPackAnswerType = {
+    updatedCardsPack: PackType
+    token: string
+    tokenDeathTime: number
+}
+export type DeletePackAnswerType = {
+    deletedCardsPack: PackType
+    token: string
+    tokenDeathTime: number
+}
+export type GetCardsDataType = {
+    cardsPack_id: string | undefined
+    cardQuestion?: string
+    min?: number | string
+    max?: number | string
+    sortCards?: string
+    page?: number | string
+    pageCount?: number | string
+}
+export type CardsType = {
+    cards:CardType[]
+    cardsTotalCount: number
+    maxGrade: number
+    minGrade: number
+    packUserId: string
+    page: number
+    pageCount: number
+    token: string
+    tokenDeathTime: number
+}
+export type CardType = {
+    answer: string
+    question: string
+    cardsPack_id: string
+    grade: number
+    rating: number
+    shots: number
+    type: string
+    user_id: string
+    created: string
+    updated: string
+    __v: number
+    _id: string
 }

@@ -127,6 +127,10 @@
     font-weight: 500;
 
 }
+.table__string__link{
+    text-decoration: none;
+    color:black;
+}
 .table__header__cards,.table__header__updated,.table__header__created{
     display: flex;
 }
@@ -163,6 +167,8 @@
     margin: 0 15px;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-decoration: none;
+    color:black;
 }
 .table__string__wrapper{
     display: grid;

@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Navigate, useSearchParams } from "react-router-dom";
-import { PacksType, profileAPI, PutPackDataType} from "../../api/cards-api";
+import { Navigate, NavLink, useSearchParams } from "react-router-dom";
+import { PacksType, packsAPI, PutPackDataType } from "../../api/cards-api";
 import { InitialAuthStateType } from "../../Store/auth-reducer";
 import { deletePackTC, getPacksTC, postPackTC, putPackTC } from "../../Store/packs-reducer";
 import { AppRootStateType, useAppDispatch } from "../../Store/store";
@@ -15,7 +15,8 @@ import { ProfileDataStateType } from "../../Store/profile-reducer";
 import { Pagination } from "../Pagination/Pagination";
 import Arrow from '../../icons/arrow.png'
 import { useDebounce } from '../../common/Debounce/debounce';
-import { setUrlParamsAC} from "../../Store/urlParams-reducer";
+import { setUrlParamsAC } from "../../Store/urlParams-reducer";
+import { setCurrentPackNameAC } from "../../Store/packs-reducer";
 
 
 
@@ -42,16 +43,16 @@ export const PacksList = () => {
         }))
     }, [searchParams])
 
-    const examplePostRequest = () =>{
-        dispatch(setUrlParamsAC({userId,sortPacks,packName,page,pageCount,min,max}))
-        dispatch(postPackTC({name:'New pack'}))
+    const examplePostRequest = () => {
+        dispatch(setUrlParamsAC({ userId, sortPacks, packName, page, pageCount, min, max }))
+        dispatch(postPackTC({ name: 'New pack' }))
     }
-    const examplePutRequest = (data:PutPackDataType) => () =>{
-        dispatch(setUrlParamsAC({userId,sortPacks,packName,page,pageCount,min,max}))
+    const examplePutRequest = (data: PutPackDataType) => () => {
+        dispatch(setUrlParamsAC({ userId, sortPacks, packName, page, pageCount, min, max }))
         dispatch(putPackTC(data))
     }
-    const exampleDeleteRequest = (packId:string) => () =>{
-        dispatch(setUrlParamsAC({userId,sortPacks,packName,page,pageCount,min,max}))
+    const exampleDeleteRequest = (packId: string) => () => {
+        dispatch(setUrlParamsAC({ userId, sortPacks, packName, page, pageCount, min, max }))
         dispatch(deletePackTC(packId))
         // console.log({id})
     }
@@ -103,6 +104,9 @@ export const PacksList = () => {
         debouncedSearchByInputValue('')
         setInputValue('')
     }
+    const setCurrentPackNameHandler=(name:string)=>()=>{
+        dispatch(setCurrentPackNameAC(name))
+    }
 
     if (!isLoggedIn) {
         return <Navigate to={'/'} />
@@ -138,7 +142,7 @@ export const PacksList = () => {
                                 style={{ color: 'rgb(176,173,191)', marginLeft: '3px', cursor: 'pointer' }} size='12px' />
                         </div>
                         <div onClick={examplePostRequest}
-                        className={classes.packsBox__inputAddButtonBox__addButton}>Add new pack</div>
+                            className={classes.packsBox__inputAddButtonBox__addButton}>Add new pack</div>
                     </div>
                     {cardPacks.length > 0 ? <div className={classes.container__packsBox__tablePageBox}>
                         <div className={classes.container__packsBox__table}>
@@ -174,18 +178,19 @@ export const PacksList = () => {
                                 let updated = changingDate(pack.updated)
                                 return (
                                     <div key={nanoid()} className={classes.table__string__wrapper}>
-                                        <div className={classes.table__string__name}>{pack.name}</div>
+                                        <NavLink to={`/main/pack/${pack._id}`} onClick={setCurrentPackNameHandler(pack.name)}
+                                         className={classes.table__string__name}>{pack.name}</NavLink>
                                         <div className={classes.table__string__cards}>{pack.cardsCount}</div>
                                         <div className={classes.table__string__updated}>{updated}</div>
                                         <div className={classes.table__string__created}>{pack.user_name}</div>
                                         <div className={classes.table__string__actions}>
                                             {pack.user_id == _id ?
                                                 <div onClick={exampleDeleteRequest(pack._id)}
-                                                className={classes.table__string__actions__delete}>Delete</div> : null}
+                                                    className={classes.table__string__actions__delete}>Delete</div> : null}
                                             {pack.user_id == _id ?
-                                                <div onClick={examplePutRequest({_id:pack._id,name:'Changed Name'})}
-                                                 className={classes.table__string__actions__edit}>Edit</div> : null}
-                                            {pack.cardsCount>0 ? <div className={classes.table__string__actions__learn}>Learn</div> : null}
+                                                <div onClick={examplePutRequest({ _id: pack._id, name: 'Changed Name' })}
+                                                    className={classes.table__string__actions__edit}>Edit</div> : null}
+                                            {pack.cardsCount > 0 ? <div className={classes.table__string__actions__learn}>Learn</div> : null}
                                         </div>
                                     </div>
                                 )
