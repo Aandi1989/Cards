@@ -34,8 +34,7 @@ export const PacksList = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     let params = Object.fromEntries(searchParams)
 
-    let { userId, sortPacks, packName, page = 1, pageCount = 10, min = minCardsCount, max = maxCardsCount } = params
-
+    let { userId, sortPacks='0updated', packName, page = 1, pageCount = 10, min = minCardsCount, max = maxCardsCount } = params
     useEffect(() => {
         dispatch(getPacksTC({
             user_id: userId, sortPacks: sortPacks, packName: packName, page: page, pageCount: pageCount,
@@ -151,24 +150,24 @@ export const PacksList = () => {
                                 <div onClick={setSortPacksHandler(sortPacks, '0cardsCount', '1cardsCount')}
                                     className={classes.table__header__cards}>
                                     <div className={classes.header__cards__text}>Cards</div>
-                                    <div className={sortPacks == '0cardsCount' ? classes.header__cards__iconBox :
-                                        (sortPacks == '1cardsCount' ? classes.header__cards__iconBox_open : classes.header__cards__iconBox_closed)}>
+                                    <div className={sortPacks == '0cardsCount' ? classes.table__header__iconBox :
+                                        (sortPacks == '1cardsCount' ? classes.table__header__iconBox_open : classes.table__header__iconBox_closed)}>
                                         <img src={Arrow} alt="Arrow" />
                                     </div>
                                 </div>
                                 <div onClick={setSortPacksHandler(sortPacks, '0updated', '1updated')}
                                     className={classes.table__header__updated}>
                                     <div className={classes.header__udated__text}>Last Updated</div>
-                                    <div className={sortPacks == undefined ? classes.header__updated__iconBox : (sortPacks == '0updated' ?
-                                        classes.header__updated__iconBox : (sortPacks == '1updated' ? classes.header__updated__iconBox_open : classes.header__updated__iconBox_closed))}>
+                                    <div className={sortPacks == '0updated' ? classes.table__header__iconBox :
+                                        (sortPacks == '1updated' ? classes.table__header__iconBox_open : classes.table__header__iconBox_closed)}>
                                         <img src={Arrow} alt="Arrow" />
                                     </div>
                                 </div>
                                 <div onClick={setSortPacksHandler(sortPacks, '0created', '1created')}
                                     className={classes.table__header__created}>
                                     <div className={classes.header__created__text}>Created by</div>
-                                    <div className={sortPacks == '0created' ? classes.header__created__iconBox :
-                                        (sortPacks == '1created' ? classes.header__created__iconBox_open : classes.header__created__iconBox_closed)}>
+                                    <div className={sortPacks == '0created' ? classes.table__header__iconBox :
+                                        (sortPacks == '1created' ? classes.table__header__iconBox_open : classes.table__header__iconBox_closed)}>
                                         <img src={Arrow} alt="Arrow" />
                                     </div>
                                 </div>

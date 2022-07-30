@@ -134,35 +134,29 @@
 .table__header__cards,.table__header__updated,.table__header__created{
     display: flex;
 }
-.header__cards__iconBox,.header__updated__iconBox,.header__created__iconBox
-,.header__cards__iconBox_open,.header__updated__iconBox_open,.header__created__iconBox_open
-,.header__cards__iconBox_closed,.header__created__iconBox_closed,.header__updated__iconBox_closed
-{
+.table__header__iconBox, .table__header__iconBox_open, .table__header__iconBox_closed{
     margin:1px 0 0 5px;
     width: 8px;
     cursor: pointer;
 }
-.header__cards__iconBox img,.header__updated__iconBox img,.header__created__iconBox img,
-.header__cards__iconBox_open img,.header__updated__iconBox_open img,.header__created__iconBox_open img,
-.header__cards__iconBox_closed img,.header__created__iconBox_closed img,.header__updated__iconBox_closed img{
+.table__header__iconBox img, .table__header__iconBox_open img, .table__header__iconBox_closed img{
    width: 100%;
    height: 100%;
    object-position: center;
    object-fit: contain;
    transition: all 0.3s;
 }
-.header__cards__iconBox_open img,.header__updated__iconBox_open img,.header__created__iconBox_open img{
+.table__header__iconBox_open img{
     transform: rotate(180deg);
     transition: all 0.3s;
 }
-.header__cards__iconBox_closed,.header__created__iconBox_closed ,.header__updated__iconBox_closed {
+.table__header__iconBox_closed {
     opacity: 0;
 }
-.header__cards__iconBox_closed:hover,.header__created__iconBox_closed:hover,.header__updated__iconBox_closed:hover{
+.table__header__iconBox_closed:hover{
     opacity: 1;
     transition: all 0.3s;
 }
-
 .table__header__name,.table__string__name,.table__string__created{
     margin: 0 15px;
     overflow: hidden;
