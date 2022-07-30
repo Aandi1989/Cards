@@ -77,3 +77,151 @@
     border-radius:25px;
     cursor:pointer;
 }
+.container__table{
+    /* width: 100%; */
+    box-shadow: 0px 0px 10px 1px rgba(97, 97, 97, 0.144);
+    margin-bottom: 25px;
+    /* height: 100%; */
+    /* border:1px solid red; */
+}
+.container__table__header{
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 1fr;
+    height: 40px;
+    line-height: 40px;
+    background-color: rgb(236,236,249);
+    font-weight: 500;
+
+}
+/* .table__string__link{
+    text-decoration: none;
+    color:black;
+} */
+.table__header__updated,.table__header__grade{
+    display: flex;
+    cursor: pointer;
+}
+.table__header__iconBox, .table__header__iconBox_open, .table__header__iconBox_closed{
+    margin:1px 0 0 5px;
+    width: 8px;
+    cursor: pointer;
+}
+.table__header__iconBox img, .table__header__iconBox_open img, .table__header__iconBox_closed img{
+   width: 100%;
+   height: 100%;
+   object-position: center;
+   object-fit: contain;
+   transition: all 0.3s;
+}
+.table__header__iconBox_open img{
+    transform: rotate(180deg);
+    transition: all 0.3s;
+}
+.table__header__iconBox_closed {
+    opacity: 0;
+}
+.table__header__iconBox_closed:hover{
+    opacity: 1;
+    transition: all 0.3s;
+}
+.table__header__question,.table__header__answer,.table__string__question,.table__string__answer{
+    margin: 0 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    color:black;
+}
+.table__string__wrapper{
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 1fr;
+    line-height: 35px;
+    height: 35px;
+    font-size: 14px;
+}
+.table__string__wrapper:nth-child(odd){
+    background-color: rgb(236,236,249);
+}
+.table__string__cards,.table__string__updated{
+    margin-left: 15px;
+} 
+.table__string__grade{
+    display: flex;
+}
+.container__footer{
+    display: flex;
+    align-items:center;
+}
+.container__footer__pagePopupBox{
+    display: flex;
+}
+.footer__pagePopupBox__amountBox{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    margin:0 10px;
+    border:1px solid rgb(176,173,191);
+    border-radius:3px;
+    width: 40px;
+    padding: 0 5px 0 5px;
+    cursor: pointer;
+}
+.footer__pagePopupBox__amountBox:hover{
+    transition: all 0.3s;
+    border-color: grey ;
+}
+.pagePopupBox__amountBox__icon{
+    /* border:1px solid red; */
+    /* width: 10px; */
+}
+.pagePopupBox__amountBox__icon img, .pagePopupBox__amountBox__icon_opened img{
+    /* border:1px solid yellow; */
+    margin-bottom: 2px;
+    transition: all 0.3s;
+}
+.pagePopupBox__amountBox__icon_opened img{
+    transform: rotate(180deg);
+    transition: all 0.3s;
+}
+.pagePopupBox__amountBox__bg{
+    position: fixed;
+    top: 0;
+    left:0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+}
+.pagePopupBox__amountBox__bg_none{
+    display:none;
+}
+.pagePopupBox__amountBox__listAmount{
+background-color: white;
+box-shadow: 0px 0px 10px 1px rgba(97, 97, 97, 0.144);
+width: 35px;
+position: absolute;
+bottom: 27px;
+left:0;
+z-index: 3;
+border:1px solid grey;
+border-radius:3px;
+}
+.pagePopupBox__amountBox__listAmount_none{
+    display: none;
+}
+.pagePopupBox__amountBox__listAmount__amount{
+height: 20px;
+line-height: 20px;
+padding-left:7px ;
+/* border:1px solid red; */
+}
+.pagePopupBox__amountBox__listAmount__amount:hover{
+color:white;
+background-color:rgb(33, 38, 143);
+}
+.container__packsBox__emptyBox{
+    font-size: 20px;
+    height: 200px;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    color:rgb(127,127,128)
+}

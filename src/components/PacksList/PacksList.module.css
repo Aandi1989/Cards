@@ -133,6 +133,7 @@
 }
 .table__header__cards,.table__header__updated,.table__header__created{
     display: flex;
+    cursor: pointer;
 }
 .table__header__iconBox, .table__header__iconBox_open, .table__header__iconBox_closed{
     margin:1px 0 0 5px;
@@ -209,6 +210,7 @@ border-radius:3px;
     /* border:1px solid red; */
     text-align: center;
     margin-top: 12%;
+    color:rgb(127,127,128)
 }
 .container__footer{
     display: flex;

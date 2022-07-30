@@ -197,7 +197,8 @@ export const PacksList = () => {
                         </div>
                         <div className={classes.container__footer}>
                             <div className={classes.container__footer__paginationBox}>
-                                <Pagination getPacksFromPage={getPacksFromPage} />
+                                <Pagination page={Number(page)} pageCount={Number(pageCount)}
+                                totalCount={cardPacksTotalCount} getPacksFromPage={getPacksFromPage} />
                             </div>
                             <div className={classes.container__footer__pagePopupBox}>
                                 <p className={classes.footer__pagePopupBox__leftText}>Show</p>
@@ -225,7 +226,7 @@ export const PacksList = () => {
                                 <p className={classes.footer__pagePopupBox__rightText}>packs per page</p>
                             </div>
                         </div>
-                    </div> : <div className={classes.container__packsBox__emptyBox}>No cards found</div>}
+                    </div> : <div className={classes.container__packsBox__emptyBox}>No packs found</div>}
                 </div>
             </div>
         </div>
