@@ -103,8 +103,8 @@ export const PacksList = () => {
         debouncedSearchByInputValue('')
         setInputValue('')
     }
-    const setCurrentPackNameHandler=(name:string)=>()=>{
-        dispatch(setCurrentPackNameAC(name))
+    const setCurrentPackNameHandler=(name:string,id:string)=>()=>{
+        dispatch(setCurrentPackNameAC(name,id))
     }
 
     if (!isLoggedIn) {
@@ -177,7 +177,7 @@ export const PacksList = () => {
                                 let updated = changingDate(pack.updated)
                                 return (
                                     <div key={nanoid()} className={classes.table__string__wrapper}>
-                                        <NavLink to={`/main/pack/${pack._id}`} onClick={setCurrentPackNameHandler(pack.name)}
+                                        <NavLink to={`/main/pack/${pack._id}`} onClick={setCurrentPackNameHandler(pack.name,pack._id)}
                                          className={classes.table__string__name}>{pack.name}</NavLink>
                                         <div className={classes.table__string__cards}>{pack.cardsCount}</div>
                                         <div className={classes.table__string__updated}>{updated}</div>

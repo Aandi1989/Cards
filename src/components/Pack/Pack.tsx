@@ -14,6 +14,7 @@ import { nanoid } from 'nanoid';
 import { AiFillStar } from 'react-icons/ai';
 import { AiOutlineStar } from 'react-icons/ai';
 import { Pagination } from "../Pagination/Pagination";
+import { useDebounce } from '../../common/Debounce/debounce';
 
 
 export const Pack = () => {
@@ -28,20 +29,22 @@ export const Pack = () => {
     const listAmount = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     const dispatch = useAppDispatch()
     const { cards, cardsTotalCount } = useSelector<AppRootStateType, CardsType>(state => state.cards)
-    const { currentPackName } = useSelector<AppRootStateType, PacksType>(state => state.packs)
+    const { currentPackName,currentPackId } = useSelector<AppRootStateType, PacksType>(state => state.packs)
     let urlParams = Object.fromEntries(searchParams)
-    let { sortCards = '0updated', page = 1, pageCount = 10 } = urlParams
-    // console.log(cards, urlParams)
+    let { sortCards = '0updated', page = 1, pageCount = 10,cardQuestion } = urlParams
+    // const state = useSelector<AppRootStateType>(state => state)
+    // console.log(state)
 
     useEffect(() => {
-        dispatch(getCardsTC({ cardsPack_id: params.packId, sortCards: sortCards, page: page, pageCount: pageCount }))
+        dispatch(getCardsTC({ cardsPack_id: params.packId, sortCards: sortCards, page: page, pageCount: pageCount,
+            cardQuestion:cardQuestion }))
     }, [params.packId, searchParams])
 
     const setFocusOnInputHandler = (value: boolean) => () => {
         setFocusOnInput(value)
     }
     const clearInputValueHandler = () => {
-        // debouncedSearchByInputValue('')
+        debouncedSearchByInputValue('')
         setInputValue('')
     }
     const goBackHandler = () => {
@@ -67,6 +70,11 @@ export const Pack = () => {
     const setPageCountHandler = (amount: number) => () => {
         setSearchParams({ ...urlParams, pageCount: `${amount}` })
     }
+    const setCardQuestion = (value: any) => {
+        setSearchParams({ ...urlParams, cardQuestion: `${value}` })
+    }
+    const debouncedSearchByInputValue = useDebounce(setCardQuestion, 2000)
+
 
     return (
         <div className={classes.main}>
@@ -82,13 +90,9 @@ export const Pack = () => {
                         classes.container__inputAddButtonBox__inputWrapper}>
                         <BiSearch style={{ color: 'rgb(176,173,191)', marginRight: '8px' }} size='20px' />
                         <input onFocus={setFocusOnInputHandler(true)} onBlur={setFocusOnInputHandler(false)}
-                            placeholder="Search..." type="text"
-                            onChange={(e) => {
-                                setInputValue(e.currentTarget.value)
-                                //     debouncedSearchByInputValue(e.currentTarget.value)
-                            }}
-                            value={inputValue}
-                        />
+                            placeholder="Search..." type="text" value={inputValue}
+                            onChange={(e) => {setInputValue(e.currentTarget.value)
+                                    debouncedSearchByInputValue(e.currentTarget.value)}} />
                         <BsXLg onClick={clearInputValueHandler}
                             style={{ color: 'rgb(176,173,191)', marginLeft: '3px', cursor: 'pointer' }} size='12px' />
                     </div>

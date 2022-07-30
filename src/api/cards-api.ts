@@ -46,6 +46,9 @@ export const packsAPI = {
 export const cardsAPI = {
     getCards(data: GetCardsDataType) {
         return instance.get<GetCardsDataType, AxiosResponse<CardsType>>(`cards/card`, { params: data })
+    },
+    postCard(data:PostCardDataType){
+        return instance.post<PostCardDataType,AxiosResponse>(`cards/card`, { card: data })
     }
 }
 
@@ -102,6 +105,7 @@ export type PacksType = {
     token: string
     tokenDeathTime: number
     currentPackName?:string
+    currentPackId?:string
 }
 export type PackType = {
     cardsCount: number
@@ -182,4 +186,17 @@ export type CardType = {
     updated: string
     __v: number
     _id: string
+}
+export type PostCardDataType = {
+    cardsPack_id:string
+    question?: string
+    answer?: string
+    grade?: number
+    shots?: number
+    rating?: number
+    answerImg?: string
+    questionImg?: string
+    questionVideo?:string
+    answerVideo?: string
+    type?: string
 }

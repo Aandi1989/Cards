@@ -20,15 +20,18 @@ export const packsReducer = (state:PacksType = initialState, action: ActionsType
     switch (action.type) {
         case 'SET-PACKS-DATA':
             return { ...state,...action.packs }
-        case 'SET-CURRENT-PACK-NAME':
-                return{...state,currentPackName:action.name}
+        case 'SET-CURRENT-PACK-DATA':
+            return{...state,
+                    currentPackName:action.name,
+                    currentPackId:action.id
+                }
         default:
             return state
     }
 }
 
 export const setPacksDataAC = (packs: PacksType) => ({ type: 'SET-PACKS-DATA', packs } as const)
-export const setCurrentPackNameAC=(name:string)=>({type:'SET-CURRENT-PACK-NAME', name} as const )
+export const setCurrentPackNameAC=(name:string,id:string)=>({type:'SET-CURRENT-PACK-DATA', name,id} as const )
 
 export const getPacksTC = (data: GetPacksType) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
