@@ -31,17 +31,19 @@ export const Pack = () => {
     const listAmount = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     const dispatch = useAppDispatch()
     const { cards, cardsTotalCount } = useSelector<AppRootStateType, CardsType>(state => state.cards)
-    const { currentPackName,currentPackId,currentPackUserId} = useSelector<AppRootStateType, PacksType>(state => state.packs)
-    const {_id} = useSelector<AppRootStateType,ProfileDataStateType>(state=>state.profile)
+    const { currentPackName, currentPackId, currentPackUserId } = useSelector<AppRootStateType, PacksType>(state => state.packs)
+    const { _id } = useSelector<AppRootStateType, ProfileDataStateType>(state => state.profile)
     let urlParams = Object.fromEntries(searchParams)
-    let { sortCards = '0updated', cardPage = 1, cardPageCount = 10,cardQuestion } = urlParams
-    let myPack=(_id==currentPackUserId)
+    let { sortCards = '0updated', cardPage = 1, cardPageCount = 10, cardQuestion } = urlParams
+    let myPack = (_id == currentPackUserId)
     // const state = useSelector<AppRootStateType>(state => state)
     // console.log(myPack)
 
     useEffect(() => {
-        dispatch(getCardsTC({ cardsPack_id: params.packId, sortCards: sortCards, page: cardPage, pageCount: cardPageCount,
-            cardQuestion:cardQuestion }))
+        dispatch(getCardsTC({
+            cardsPack_id: params.packId, sortCards: sortCards, page: cardPage, pageCount: cardPageCount,
+            cardQuestion: cardQuestion
+        }))
     }, [params.packId, searchParams])
 
     const setFocusOnInputHandler = (value: boolean) => () => {
@@ -79,16 +81,16 @@ export const Pack = () => {
     }
     const debouncedSearchByInputValue = useDebounce(setCardQuestion, 2000)
 
-    const postCardExample=(packId:string)=>()=>{
-        dispatch(setUrlParamsAC({currentPackId,sortCards, cardQuestion, cardPage, cardPageCount}))
-        dispatch(postCardTC({cardsPack_id:packId}))
+    const postCardExample = (packId: string) => () => {
+        dispatch(setUrlParamsAC({ currentPackId, sortCards, cardQuestion, cardPage, cardPageCount }))
+        dispatch(postCardTC({ cardsPack_id: packId }))
     }
-    const putCardExample=(id:string)=>()=>{
-        dispatch(setUrlParamsAC({currentPackId,sortCards, cardQuestion, cardPage, cardPageCount}))
-        dispatch(putCardTC({_id:id,question:'Updated question'}))
+    const putCardExample = (id: string) => () => {
+        dispatch(setUrlParamsAC({ currentPackId, sortCards, cardQuestion, cardPage, cardPageCount }))
+        dispatch(putCardTC({ _id: id, question: 'Updated question' }))
     }
-    const deleteCardExample=(id:string)=>()=>{
-        dispatch(setUrlParamsAC({currentPackId,sortCards, cardQuestion, cardPage, cardPageCount}))
+    const deleteCardExample = (id: string) => () => {
+        dispatch(setUrlParamsAC({ currentPackId, sortCards, cardQuestion, cardPage, cardPageCount }))
         dispatch(deleteCardTC(id))
     }
 
@@ -101,20 +103,22 @@ export const Pack = () => {
                     </div>
                     <div className={classes.container__header__name}>{currentPackName}</div>
                 </div>
-                <div className={classes.container__inputAddButtonBox}>
+                {cards.length == 0 && !myPack || <div className={classes.container__inputAddButtonBox}>
                     <div className={focusOnInput ? classes.container__inputAddButtonBox__inputWrapper_active :
                         classes.container__inputAddButtonBox__inputWrapper}>
                         <BiSearch style={{ color: 'rgb(176,173,191)', marginRight: '8px' }} size='20px' />
                         <input onFocus={setFocusOnInputHandler(true)} onBlur={setFocusOnInputHandler(false)}
                             placeholder="Search..." type="text" value={inputValue}
-                            onChange={(e) => {setInputValue(e.currentTarget.value)
-                                    debouncedSearchByInputValue(e.currentTarget.value)}} />
+                            onChange={(e) => {
+                                setInputValue(e.currentTarget.value)
+                                debouncedSearchByInputValue(e.currentTarget.value)
+                            }} />
                         <BsXLg onClick={clearInputValueHandler}
                             style={{ color: 'rgb(176,173,191)', marginLeft: '3px', cursor: 'pointer' }} size='12px' />
                     </div>
-                    <div onClick={postCardExample(currentPackId)} 
-                    className={classes.container__inputAddButtonBox__addButton}>Add new card</div>
-                </div>
+                    {myPack ? <div onClick={postCardExample(currentPackId)}
+                        className={classes.container__inputAddButtonBox__addButton}>Add new card</div> : null}
+                </div>}
                 {cards.length > 0 ? <div className={classes.container__cardsBox__tablePageBox}>
                     <div className={classes.container__table}>
                         <div className={myPack ? classes.container__table__header_withActions : classes.container__table__header}>
@@ -147,7 +151,7 @@ export const Pack = () => {
                                     <div className={classes.table__string__updated}>{updated}</div>
                                     <div className={classes.table__string__grade}>
                                         <div className={classes.string__grade__iconBox}>
-                                            {card.grade >= 1 ? <AiFillStar style={{ color: 'rgb(33,38,143)'}} /> : <AiOutlineStar style={{ color: 'rgb(33,38,143)' }} />}
+                                            {card.grade >= 1 ? <AiFillStar style={{ color: 'rgb(33,38,143)' }} /> : <AiOutlineStar style={{ color: 'rgb(33,38,143)' }} />}
                                         </div>
                                         <div className={classes.string__grade__iconBox}>
                                             {card.grade >= 2 ? <AiFillStar style={{ color: 'rgb(33,38,143)' }} /> : <AiOutlineStar style={{ color: 'rgb(33,38,143)' }} />}
@@ -163,11 +167,11 @@ export const Pack = () => {
                                         </div>
                                     </div>
                                     {myPack ? <div className={classes.table__string__actions}>
-                                                <div onClick={deleteCardExample(card._id)}
-                                                    className={classes.table__string__actions__delete}>Delete</div>
-                                                <div onClick={putCardExample(card._id)}
-                                                    className={classes.table__string__actions__edit}>Edit</div>
-                                        </div> : null}
+                                        <div onClick={deleteCardExample(card._id)}
+                                            className={classes.table__string__actions__delete}>Delete</div>
+                                        <div onClick={putCardExample(card._id)}
+                                            className={classes.table__string__actions__edit}>Edit</div>
+                                    </div> : null}
                                 </div>
                             )
                         })}
@@ -202,7 +206,9 @@ export const Pack = () => {
                             <p className={classes.footer__pagePopupBox__rightText}>cards per page</p>
                         </div>
                     </div>
-                </div> : <div className={classes.container__packsBox__emptyBox}>This pack is empty. Click add card to fill this pack.</div>}
+                </div> : <div className={classes.container__packsBox__emptyBox}>This pack is empty.
+                    {myPack ? `Click add card to fill this pack.` : null}
+                </div>}
             </div>
         </div>
     )

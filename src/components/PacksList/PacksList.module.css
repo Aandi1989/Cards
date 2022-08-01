@@ -181,6 +181,9 @@ margin:0 auto;
 .table__string__cards,.table__string__updated{
     margin-left: 15px;
 } 
+.table__string__created{
+    margin:0 auto;
+}
 .table__string__actions{
     display: flex;
     align-items:center;

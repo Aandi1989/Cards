@@ -17,6 +17,7 @@ import Arrow from '../../icons/arrow.png'
 import { useDebounce } from '../../common/Debounce/debounce';
 import { setUrlParamsAC } from "../../Store/urlParams-reducer";
 import { setCurrentPackDataAC } from "../../Store/packs-reducer";
+import { GiCoinsPile } from "react-icons/gi";
 
 
 
