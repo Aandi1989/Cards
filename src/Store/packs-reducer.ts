@@ -13,7 +13,8 @@ const initialState : PacksType ={
     pageCount: 10,
     token: '',
     tokenDeathTime: 0,
-    
+    currentPackId:''
+
 }
 
 export const packsReducer = (state:PacksType = initialState, action: ActionsType): PacksType => {
@@ -23,7 +24,8 @@ export const packsReducer = (state:PacksType = initialState, action: ActionsType
         case 'SET-CURRENT-PACK-DATA':
             return{...state,
                     currentPackName:action.name,
-                    currentPackId:action.id
+                    currentPackId:action.id,
+                    currentPackUserId:action.userId
                 }
         default:
             return state
@@ -31,7 +33,7 @@ export const packsReducer = (state:PacksType = initialState, action: ActionsType
 }
 
 export const setPacksDataAC = (packs: PacksType) => ({ type: 'SET-PACKS-DATA', packs } as const)
-export const setCurrentPackNameAC=(name:string,id:string)=>({type:'SET-CURRENT-PACK-DATA', name,id} as const )
+export const setCurrentPackDataAC=(name:string,id:string,userId:string)=>({type:'SET-CURRENT-PACK-DATA', name,id,userId} as const )
 
 export const getPacksTC = (data: GetPacksType) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
@@ -54,12 +56,12 @@ export const getPacksTC = (data: GetPacksType) => (dispatch: Dispatch<ActionsTyp
 
 export const postPackTC = (data: PostPackDataType):AppThunk => (dispatch,getState) => {
     dispatch(setAppStatusAC('loading'))
-    const {userId,sortPacks,packName,page,pageCount,min,max} = getState().urlParams
+    const {userId,sortPacks,packName,packPage,packPageCount,min,max} = getState().urlParams
     packsAPI.postPack(data)
         .then(res => {
             // console.log(res)
             if (res.status == 201) {
-                dispatch(getPacksTC({user_id:userId,sortPacks,packName,page,pageCount,min,max}))
+                dispatch(getPacksTC({user_id:userId,sortPacks,packName,page:packPage,pageCount:packPageCount,min,max}))
             } else {
                 dispatch(setAppErrorAC('Some server error occurred'))
                 dispatch(setAppStatusAC('failed'))
@@ -74,12 +76,12 @@ export const postPackTC = (data: PostPackDataType):AppThunk => (dispatch,getStat
 
 export const putPackTC = (data: PutPackDataType):AppThunk => (dispatch,getState) => {
     dispatch(setAppStatusAC('loading'))
-    const {userId,sortPacks,packName,page,pageCount,min,max} = getState().urlParams
+    const {userId,sortPacks,packName,packPage,packPageCount,min,max} = getState().urlParams
     packsAPI.putPack(data)
         .then(res => {
             console.log(res)
             if (res.status == 200) {
-                dispatch(getPacksTC({user_id:userId,sortPacks,packName,page,pageCount,min,max}))
+                dispatch(getPacksTC({user_id:userId,sortPacks,packName,page:packPage,pageCount:packPageCount,min,max}))
             } else {
                 dispatch(setAppErrorAC('Some server error occurred'))
                 dispatch(setAppStatusAC('failed'))
@@ -94,12 +96,12 @@ export const putPackTC = (data: PutPackDataType):AppThunk => (dispatch,getState)
 
 export const deletePackTC = (packId:string):AppThunk => (dispatch,getState) => {
     dispatch(setAppStatusAC('loading'))
-    const {userId,sortPacks,packName,page,pageCount,min,max} = getState().urlParams
+    const {userId,sortPacks,packName,packPage,packPageCount,min,max} = getState().urlParams
     packsAPI.deletePack(packId)
         .then(res => {
             // console.log(res)
             if (res.status == 200) {
-                dispatch(getPacksTC({user_id:userId,sortPacks,packName,page,pageCount,min,max}))
+                dispatch(getPacksTC({user_id:userId,sortPacks,packName,page:packPage,pageCount:packPageCount,min,max}))
             } else {
                 dispatch(setAppErrorAC('Some server error occurred'))
                 dispatch(setAppStatusAC('failed'))
@@ -112,7 +114,7 @@ export const deletePackTC = (packId:string):AppThunk => (dispatch,getState) => {
         })
 }
 
-export type SetCurrentPackNameActionType = ReturnType<typeof setCurrentPackNameAC>
+export type SetCurrentPackNameActionType = ReturnType<typeof setCurrentPackDataAC>
 export type setPacksDataActionType = ReturnType<typeof setPacksDataAC>
 
 type ActionsType = setPacksDataActionType | SetCurrentPackNameActionType | SetAppErrorActionType | SetAppStatusActionType 

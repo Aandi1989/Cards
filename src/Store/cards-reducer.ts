@@ -1,7 +1,8 @@
 import React from "react";
 import { Dispatch } from "redux";
-import { CardType, CardsType, GetCardsDataType, cardsAPI } from "../api/cards-api";
+import { CardType, CardsType, GetCardsDataType, cardsAPI, PostCardDataType, PutCardDataType } from "../api/cards-api";
 import { setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from "./app-reducer";
+import { AppThunk } from "./store";
 
 const InitialState:CardsType={
     cards:[],
@@ -34,6 +35,63 @@ export const getCardsTC = (data: GetCardsDataType) => (dispatch: Dispatch<Action
             if (res.status == 200) {
                 dispatch(setCardsDataAC(res.data))
                 dispatch(setAppStatusAC('succeeded'))
+            } else {
+                dispatch(setAppErrorAC('Some server error occurred'))
+                dispatch(setAppStatusAC('failed'))
+            }
+        })
+        .catch((error) => {
+            dispatch(setAppErrorAC(error.message ? error.message : 'Some network error occurred'))
+            dispatch(setAppStatusAC('failed'))
+        })
+}
+
+export const postCardTC = (data: PostCardDataType):AppThunk => (dispatch,getState) => {
+    dispatch(setAppStatusAC('loading'))
+    const {currentPackId,sortCards,cardPage,cardPageCount,cardQuestion} = getState().urlParams
+    cardsAPI.postCard(data)
+        .then(res => {
+            // console.log(res)
+            if (res.status == 201) {
+                dispatch(getCardsTC({cardsPack_id:currentPackId,sortCards,page:cardPage,pageCount:cardPageCount,cardQuestion}))
+            } else {
+                dispatch(setAppErrorAC('Some server error occurred'))
+                dispatch(setAppStatusAC('failed'))
+            }
+        })
+        .catch((error) => {
+            dispatch(setAppErrorAC(error.message ? error.message : 'Some network error occurred'))
+            dispatch(setAppStatusAC('failed'))
+        })
+}
+
+export const putCardTC = (data: PutCardDataType):AppThunk => (dispatch,getState) => {
+    dispatch(setAppStatusAC('loading'))
+    const {currentPackId,sortCards,cardPage,cardPageCount,cardQuestion} = getState().urlParams
+    cardsAPI.putCard(data)
+        .then(res => {
+            // console.log(res)
+            if (res.status == 200) {
+                dispatch(getCardsTC({cardsPack_id:currentPackId,sortCards,page:cardPage,pageCount:cardPageCount,cardQuestion}))
+            } else {
+                dispatch(setAppErrorAC('Some server error occurred'))
+                dispatch(setAppStatusAC('failed'))
+            }
+        })
+        .catch((error) => {
+            dispatch(setAppErrorAC(error.message ? error.message : 'Some network error occurred'))
+            dispatch(setAppStatusAC('failed'))
+        })
+}
+
+export const deleteCardTC = (cardId: string):AppThunk => (dispatch,getState) => {
+    dispatch(setAppStatusAC('loading'))
+    const {currentPackId,sortCards,cardPage,cardPageCount,cardQuestion} = getState().urlParams
+    cardsAPI.deleteCard(cardId)
+        .then(res => {
+            console.log(res)
+            if (res.status == 200) {
+                dispatch(getCardsTC({cardsPack_id:currentPackId,sortCards,page:cardPage,pageCount:cardPageCount,cardQuestion}))
             } else {
                 dispatch(setAppErrorAC('Some server error occurred'))
                 dispatch(setAppStatusAC('failed'))

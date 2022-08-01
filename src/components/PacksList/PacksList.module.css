@@ -135,6 +135,9 @@
     display: flex;
     cursor: pointer;
 }
+.table__header__created{
+margin:0 auto;
+}
 .table__header__iconBox, .table__header__iconBox_open, .table__header__iconBox_closed{
     margin:1px 0 0 5px;
     width: 8px;
@@ -180,7 +183,6 @@
 } 
 .table__string__actions{
     display: flex;
-    justify-content: flex-end;
     align-items:center;
     padding-right: 20px;
 }
@@ -199,6 +201,9 @@ border-radius:3px;
     background-color:rgb(215,216,239);
     color:rgb(33,38,143);
     margin-left: 8px;
+}
+.table__string__actions__learn{
+    margin-left: auto;
 }
 .table__string__actions__delete:hover,.table__string__actions__edit:hover, .table__string__actions__learn:hover{
     box-shadow: 0px 0px 10px 1px rgba(97, 97, 97, 0.144);

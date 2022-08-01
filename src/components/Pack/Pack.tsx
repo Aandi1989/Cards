@@ -5,9 +5,9 @@ import { BiSearch } from "react-icons/bi";
 import { BsXLg } from "react-icons/bs";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { AppRootStateType, useAppDispatch } from "../../Store/store";
-import { getCardsTC } from "../../Store/cards-reducer";
+import { deleteCardTC, getCardsTC, postCardTC, putCardTC } from "../../Store/cards-reducer";
 import { useSelector } from "react-redux";
-import { CardsType, PacksType } from "../../api/cards-api";
+import { CardsType, PacksType, PostCardDataType } from "../../api/cards-api";
 import Arrow from '../../icons/arrow.png'
 import { changingDate } from "../../helper/ChahgingDate";
 import { nanoid } from 'nanoid';
@@ -15,6 +15,8 @@ import { AiFillStar } from 'react-icons/ai';
 import { AiOutlineStar } from 'react-icons/ai';
 import { Pagination } from "../Pagination/Pagination";
 import { useDebounce } from '../../common/Debounce/debounce';
+import { ProfileDataStateType } from "../../Store/profile-reducer";
+import { setUrlParamsAC } from "../../Store/urlParams-reducer";
 
 
 export const Pack = () => {
@@ -29,14 +31,16 @@ export const Pack = () => {
     const listAmount = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     const dispatch = useAppDispatch()
     const { cards, cardsTotalCount } = useSelector<AppRootStateType, CardsType>(state => state.cards)
-    const { currentPackName,currentPackId } = useSelector<AppRootStateType, PacksType>(state => state.packs)
+    const { currentPackName,currentPackId,currentPackUserId} = useSelector<AppRootStateType, PacksType>(state => state.packs)
+    const {_id} = useSelector<AppRootStateType,ProfileDataStateType>(state=>state.profile)
     let urlParams = Object.fromEntries(searchParams)
-    let { sortCards = '0updated', page = 1, pageCount = 10,cardQuestion } = urlParams
+    let { sortCards = '0updated', cardPage = 1, cardPageCount = 10,cardQuestion } = urlParams
+    let myPack=(_id==currentPackUserId)
     // const state = useSelector<AppRootStateType>(state => state)
-    // console.log(state)
+    // console.log(myPack)
 
     useEffect(() => {
-        dispatch(getCardsTC({ cardsPack_id: params.packId, sortCards: sortCards, page: page, pageCount: pageCount,
+        dispatch(getCardsTC({ cardsPack_id: params.packId, sortCards: sortCards, page: cardPage, pageCount: cardPageCount,
             cardQuestion:cardQuestion }))
     }, [params.packId, searchParams])
 
@@ -58,7 +62,7 @@ export const Pack = () => {
         }
     }
     const getPacksFromPage = (page: number) => {
-        setSearchParams({ ...urlParams, page: `${page}` })
+        setSearchParams({ ...urlParams, cardPage: `${page}` })
     }
     const toogleShowPacksAmount = () => {
         if (showPacksAmount) {
@@ -68,13 +72,25 @@ export const Pack = () => {
         }
     }
     const setPageCountHandler = (amount: number) => () => {
-        setSearchParams({ ...urlParams, pageCount: `${amount}` })
+        setSearchParams({ ...urlParams, cardPageCount: `${amount}` })
     }
     const setCardQuestion = (value: any) => {
         setSearchParams({ ...urlParams, cardQuestion: `${value}` })
     }
     const debouncedSearchByInputValue = useDebounce(setCardQuestion, 2000)
 
+    const postCardExample=(packId:string)=>()=>{
+        dispatch(setUrlParamsAC({currentPackId,sortCards, cardQuestion, cardPage, cardPageCount}))
+        dispatch(postCardTC({cardsPack_id:packId}))
+    }
+    const putCardExample=(id:string)=>()=>{
+        dispatch(setUrlParamsAC({currentPackId,sortCards, cardQuestion, cardPage, cardPageCount}))
+        dispatch(putCardTC({_id:id,question:'Updated question'}))
+    }
+    const deleteCardExample=(id:string)=>()=>{
+        dispatch(setUrlParamsAC({currentPackId,sortCards, cardQuestion, cardPage, cardPageCount}))
+        dispatch(deleteCardTC(id))
+    }
 
     return (
         <div className={classes.main}>
@@ -96,11 +112,12 @@ export const Pack = () => {
                         <BsXLg onClick={clearInputValueHandler}
                             style={{ color: 'rgb(176,173,191)', marginLeft: '3px', cursor: 'pointer' }} size='12px' />
                     </div>
-                    <div className={classes.container__inputAddButtonBox__addButton}>Add new card</div>
+                    <div onClick={postCardExample(currentPackId)} 
+                    className={classes.container__inputAddButtonBox__addButton}>Add new card</div>
                 </div>
                 {cards.length > 0 ? <div className={classes.container__cardsBox__tablePageBox}>
                     <div className={classes.container__table}>
-                        <div className={classes.container__table__header}>
+                        <div className={myPack ? classes.container__table__header_withActions : classes.container__table__header}>
                             <div className={classes.table__header__question}>Question</div>
                             <div className={classes.table__header__answer}>Answer</div>
                             <div onClick={setSortPacksHandler(sortCards, '0updated', '1updated')}
@@ -119,17 +136,18 @@ export const Pack = () => {
                                     <img src={Arrow} alt="Arrow" />
                                 </div>
                             </div>
+                            {myPack ? <div className={classes.table__header__actions}>Actions</div> : null}
                         </div>
                         {cards.map(card => {
                             let updated = changingDate(card.updated)
                             return (
-                                <div key={nanoid()} className={classes.table__string__wrapper}>
+                                <div key={nanoid()} className={myPack ? classes.table__string__wrapper_withActions : classes.table__string__wrapper}>
                                     <div className={classes.table__string__question}>{card.question}</div>
                                     <div className={classes.table__string__answer}>{card.answer}</div>
                                     <div className={classes.table__string__updated}>{updated}</div>
                                     <div className={classes.table__string__grade}>
                                         <div className={classes.string__grade__iconBox}>
-                                            {card.grade >= 1 ? <AiFillStar style={{ color: 'rgb(33,38,143)' }} /> : <AiOutlineStar style={{ color: 'rgb(33,38,143)' }} />}
+                                            {card.grade >= 1 ? <AiFillStar style={{ color: 'rgb(33,38,143)'}} /> : <AiOutlineStar style={{ color: 'rgb(33,38,143)' }} />}
                                         </div>
                                         <div className={classes.string__grade__iconBox}>
                                             {card.grade >= 2 ? <AiFillStar style={{ color: 'rgb(33,38,143)' }} /> : <AiOutlineStar style={{ color: 'rgb(33,38,143)' }} />}
@@ -144,19 +162,25 @@ export const Pack = () => {
                                             {card.grade == 5 ? <AiFillStar style={{ color: 'rgb(33,38,143)' }} /> : <AiOutlineStar style={{ color: 'rgb(33,38,143)' }} />}
                                         </div>
                                     </div>
+                                    {myPack ? <div className={classes.table__string__actions}>
+                                                <div onClick={deleteCardExample(card._id)}
+                                                    className={classes.table__string__actions__delete}>Delete</div>
+                                                <div onClick={putCardExample(card._id)}
+                                                    className={classes.table__string__actions__edit}>Edit</div>
+                                        </div> : null}
                                 </div>
                             )
                         })}
                     </div>
                     <div className={classes.container__footer}>
                         <div className={classes.container__footer__paginationBox}>
-                            <Pagination page={Number(page)} pageCount={Number(pageCount)}
+                            <Pagination page={Number(cardPage)} pageCount={Number(cardPageCount)}
                                 totalCount={cardsTotalCount} getPacksFromPage={getPacksFromPage} />
                         </div>
                         <div className={classes.container__footer__pagePopupBox}>
                             <p className={classes.footer__pagePopupBox__leftText}>Show</p>
                             <div onClick={toogleShowPacksAmount} className={classes.footer__pagePopupBox__amountBox}>
-                                <div className={classes.pagePopupBox__amountBox__amount}>{pageCount}</div>
+                                <div className={classes.pagePopupBox__amountBox__amount}>{cardPageCount}</div>
                                 <div className={showPacksAmount ? classes.pagePopupBox__amountBox__icon_opened
                                     : classes.pagePopupBox__amountBox__icon}>
                                     <img src={Arrow} alt="" />

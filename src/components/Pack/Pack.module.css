@@ -84,14 +84,19 @@
     /* height: 100%; */
     /* border:1px solid red; */
 }
-.container__table__header{
+.container__table__header,.container__table__header_withActions{
     display: grid;
-    grid-template-columns: 2fr 2fr 2fr 1fr;
+    
     height: 40px;
     line-height: 40px;
     background-color: rgb(236,236,249);
     font-weight: 500;
-
+}
+.container__table__header{
+    grid-template-columns: 2fr 2fr 2fr 1fr;
+}
+.container__table__header_withActions{
+    grid-template-columns: 2fr 2fr 2fr 1fr 2fr;
 }
 /* .table__string__link{
     text-decoration: none;
@@ -100,6 +105,9 @@
 .table__header__updated,.table__header__grade{
     display: flex;
     cursor: pointer;
+}
+.table__header__grade{
+    margin-left: 5px;
 }
 .table__header__iconBox, .table__header__iconBox_open, .table__header__iconBox_closed{
     margin:1px 0 0 5px;
@@ -131,21 +139,54 @@
     text-decoration: none;
     color:black;
 }
-.table__string__wrapper{
+.table__string__wrapper,.table__string__wrapper_withActions{
     display: grid;
-    grid-template-columns: 2fr 2fr 2fr 1fr;
     line-height: 35px;
     height: 35px;
     font-size: 14px;
 }
-.table__string__wrapper:nth-child(odd){
+.table__string__wrapper{
+    grid-template-columns: 2fr 2fr 2fr 1fr;
+}
+.table__string__wrapper_withActions{
+    grid-template-columns: 2fr 2fr 2fr 1fr 2fr;
+}
+.table__string__wrapper:nth-child(odd),.table__string__wrapper_withActions:nth-child(odd){
     background-color: rgb(236,236,249);
 }
-.table__string__cards,.table__string__updated{
+.table__string__updated{
     margin-left: 15px;
 } 
 .table__string__grade{
     display: flex;
+    height: 30px;
+    padding-top: 3px;
+}
+.table__string__actions{
+    display: flex;
+    align-items:center;
+    padding-right: 20px;
+}
+.table__string__actions__delete,.table__string__actions__edit{
+width: 50px;
+height: 22px;
+line-height: 22px;
+text-align: center;
+border-radius:3px;
+}
+.table__string__actions__delete{
+    background-color:rgb(241,69,61);
+    color:white;
+}
+.table__string__actions__edit{
+    background-color:rgb(215,216,239);
+    color:rgb(33,38,143);
+    margin-left: 8px;
+}
+.table__string__actions__delete:hover,.table__string__actions__edit:hover{
+    box-shadow: 0px 0px 10px 1px rgba(97, 97, 97, 0.144);
+    cursor: pointer; 
+    transition: box-shadow 0.2s ;
 }
 .container__footer{
     display: flex;

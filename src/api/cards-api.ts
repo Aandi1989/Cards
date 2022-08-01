@@ -28,31 +28,7 @@ const forgotData = {
     from: '',
     message: `<div>Password recovery <a href='http://localhost:3000/set-new-password/$token'><a/></div>`
 }
-export const packsAPI = {
-    getPacks(data: GetPacksType) {
-        return instance.get<GetPacksType, AxiosResponse<PacksType>>(`cards/pack`, { params: data })
-    },
-    postPack(data: PostPackDataType) {
-        return instance.post<PostPackDataType, AxiosResponse<PostPackAnswerType>>(`cards/pack`, { cardsPack: data })
-    },
-    putPack(data: PutPackDataType) {
-        return instance.put<PutPackDataType, AxiosResponse<PutPackAnswerType>>(`cards/pack`, { cardsPack: data })
-    },
-    deletePack(packId: string) {
-        return instance.delete<AxiosResponse<DeletePackAnswerType>>(`cards/pack?id=${packId}`)
-    }
-}
 
-export const cardsAPI = {
-    getCards(data: GetCardsDataType) {
-        return instance.get<GetCardsDataType, AxiosResponse<CardsType>>(`cards/card`, { params: data })
-    },
-    postCard(data:PostCardDataType){
-        return instance.post<PostCardDataType,AxiosResponse>(`cards/card`, { card: data })
-    }
-}
-
-//types
 export type LoginDataType = {
     email: string
     password: string
@@ -86,6 +62,21 @@ export type UserType = {
 export type RegisterType = {
     addedUser: UserType
 }
+
+export const packsAPI = {
+    getPacks(data: GetPacksType) {
+        return instance.get<GetPacksType, AxiosResponse<PacksType>>(`cards/pack`, { params: data })
+    },
+    postPack(data: PostPackDataType) {
+        return instance.post<PostPackDataType, AxiosResponse<PostPackAnswerType>>(`cards/pack`, { cardsPack: data })
+    },
+    putPack(data: PutPackDataType) {
+        return instance.put<PutPackDataType, AxiosResponse<PutPackAnswerType>>(`cards/pack`, { cardsPack: data })
+    },
+    deletePack(packId: string) {
+        return instance.delete<AxiosResponse<DeletePackAnswerType>>(`cards/pack?id=${packId}`)
+    }
+}
 export type GetPacksType = {
     packName?: string
     min?: number | string
@@ -104,8 +95,9 @@ export type PacksType = {
     pageCount: number
     token: string
     tokenDeathTime: number
-    currentPackName?:string
-    currentPackId?:string
+    currentPackName?: string
+    currentPackId: string
+    currentPackUserId?: string
 }
 export type PackType = {
     cardsCount: number
@@ -153,6 +145,24 @@ export type DeletePackAnswerType = {
     token: string
     tokenDeathTime: number
 }
+
+export const cardsAPI = {
+    getCards(data: GetCardsDataType) {
+        return instance.get<GetCardsDataType, AxiosResponse<CardsType>>(`cards/card`, { params: data })
+    },
+    postCard(data: PostCardDataType) {
+        return instance.post<PostCardDataType, AxiosResponse<PostCardAnswerType>>(`cards/card`, { card: data })
+    },
+    putCard(data: PutCardDataType) {
+        return instance.put<PutCardDataType, AxiosResponse<PutCardAnswerType>>(`cards/card`, { card: data })
+    },
+    deleteCard(cardId: string) {
+        return instance.delete<AxiosResponse<DeleteCardAnswerType>>(`cards/card?id=${cardId}`)
+    }
+}
+
+
+
 export type GetCardsDataType = {
     cardsPack_id: string | undefined
     cardQuestion?: string
@@ -163,7 +173,7 @@ export type GetCardsDataType = {
     pageCount?: number | string
 }
 export type CardsType = {
-    cards:CardType[]
+    cards: CardType[]
     cardsTotalCount: number
     maxGrade: number
     minGrade: number
@@ -186,9 +196,11 @@ export type CardType = {
     updated: string
     __v: number
     _id: string
+    more_id?: string
+    comments?: string
 }
 export type PostCardDataType = {
-    cardsPack_id:string
+    cardsPack_id: string
     question?: string
     answer?: string
     grade?: number
@@ -196,7 +208,56 @@ export type PostCardDataType = {
     rating?: number
     answerImg?: string
     questionImg?: string
-    questionVideo?:string
+    questionVideo?: string
     answerVideo?: string
     type?: string
+}
+export type PostCardAnswerType = {
+    newCard: CardType
+    token: string
+    tokenDeathTime: number
+}
+export type PutCardDataType = {
+    _id: string
+    comments?: string
+    question?: string
+    answer?: string
+    grade?: number
+    shots?: number
+    rating?: number
+    answerImg?: string
+    questionImg?: string
+    questionVideo?: string
+    answerVideo?: string
+    type?: string
+}
+export type PutCardAnswerType = {
+    updatedCard: updatedCardType
+    token: string
+    tokenDeathTime: number
+}
+export type updatedCardType = {
+    answer: string
+    answerImg: string
+    answerVideo: string
+    cardsPack_id: string
+    comments: string
+    created: string
+    grade: number
+    more_id: string
+    question: string
+    questionImg: string
+    questionVideo: string
+    rating: number
+    shots: number
+    type: string
+    updated: string
+    user_id: string
+    __v: number
+    _id: string
+}
+export type DeleteCardAnswerType = {
+    deletedCard:CardType
+    token: string
+    tokenDeathTime: number
 }

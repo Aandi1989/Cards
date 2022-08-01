@@ -16,7 +16,7 @@ import { Pagination } from "../Pagination/Pagination";
 import Arrow from '../../icons/arrow.png'
 import { useDebounce } from '../../common/Debounce/debounce';
 import { setUrlParamsAC } from "../../Store/urlParams-reducer";
-import { setCurrentPackNameAC } from "../../Store/packs-reducer";
+import { setCurrentPackDataAC } from "../../Store/packs-reducer";
 
 
 
@@ -34,24 +34,24 @@ export const PacksList = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     let params = Object.fromEntries(searchParams)
 
-    let { userId, sortPacks='0updated', packName, page = 1, pageCount = 10, min = minCardsCount, max = maxCardsCount } = params
+    let { userId, sortPacks='0updated', packName, packPage = 1, packPageCount = 10, min = minCardsCount, max = maxCardsCount } = params
     useEffect(() => {
         dispatch(getPacksTC({
-            user_id: userId, sortPacks: sortPacks, packName: packName, page: page, pageCount: pageCount,
+            user_id: userId, sortPacks: sortPacks, packName: packName, page: packPage, pageCount: packPageCount,
             min: min, max: max
         }))
     }, [searchParams])
 
     const examplePostRequest = () => {
-        dispatch(setUrlParamsAC({ userId, sortPacks, packName, page, pageCount, min, max }))
+        dispatch(setUrlParamsAC({ userId, sortPacks, packName, packPage, packPageCount, min, max }))
         dispatch(postPackTC({ name: 'New pack' }))
     }
     const examplePutRequest = (data: PutPackDataType) => () => {
-        dispatch(setUrlParamsAC({ userId, sortPacks, packName, page, pageCount, min, max }))
+        dispatch(setUrlParamsAC({ userId, sortPacks, packName, packPage, packPageCount, min, max }))
         dispatch(putPackTC(data))
     }
     const exampleDeleteRequest = (packId: string) => () => {
-        dispatch(setUrlParamsAC({ userId, sortPacks, packName, page, pageCount, min, max }))
+        dispatch(setUrlParamsAC({ userId, sortPacks, packName, packPage, packPageCount, min, max }))
         dispatch(deletePackTC(packId))
         // console.log({id})
     }
@@ -68,7 +68,7 @@ export const PacksList = () => {
         setInputValue('')
     }
     const getPacksFromPage = (page: number) => {
-        setSearchParams({ ...params, page: `${page}` })
+        setSearchParams({ ...params, packPage: `${page}` })
     }
     const setSortPacksHandler = (currentSort: string, sort0: string, sort1: string) => () => {
         if (currentSort == sort0) {
@@ -85,7 +85,7 @@ export const PacksList = () => {
         }
     }
     const setPageCountHandler = (amount: number) => () => {
-        setSearchParams({ ...params, pageCount: `${amount}` })
+        setSearchParams({ ...params, packPageCount: `${amount}` })
     }
 
     const setPackName = (value: any) => {
@@ -103,8 +103,8 @@ export const PacksList = () => {
         debouncedSearchByInputValue('')
         setInputValue('')
     }
-    const setCurrentPackNameHandler=(name:string,id:string)=>()=>{
-        dispatch(setCurrentPackNameAC(name,id))
+    const setCurrentPackNameHandler=(name:string,id:string,packId:string)=>()=>{
+        dispatch(setCurrentPackDataAC(name,id,packId))
     }
 
     if (!isLoggedIn) {
@@ -177,7 +177,7 @@ export const PacksList = () => {
                                 let updated = changingDate(pack.updated)
                                 return (
                                     <div key={nanoid()} className={classes.table__string__wrapper}>
-                                        <NavLink to={`/main/pack/${pack._id}`} onClick={setCurrentPackNameHandler(pack.name,pack._id)}
+                                        <NavLink to={`/main/pack/${pack._id}`} onClick={setCurrentPackNameHandler(pack.name,pack._id,pack.user_id)}
                                          className={classes.table__string__name}>{pack.name}</NavLink>
                                         <div className={classes.table__string__cards}>{pack.cardsCount}</div>
                                         <div className={classes.table__string__updated}>{updated}</div>
@@ -197,13 +197,13 @@ export const PacksList = () => {
                         </div>
                         <div className={classes.container__footer}>
                             <div className={classes.container__footer__paginationBox}>
-                                <Pagination page={Number(page)} pageCount={Number(pageCount)}
+                                <Pagination page={Number(packPage)} pageCount={Number(packPageCount)}
                                 totalCount={cardPacksTotalCount} getPacksFromPage={getPacksFromPage} />
                             </div>
                             <div className={classes.container__footer__pagePopupBox}>
                                 <p className={classes.footer__pagePopupBox__leftText}>Show</p>
                                 <div onClick={toogleShowPacksAmount} className={classes.footer__pagePopupBox__amountBox}>
-                                    <div className={classes.pagePopupBox__amountBox__amount}>{pageCount}</div>
+                                    <div className={classes.pagePopupBox__amountBox__amount}>{packPageCount}</div>
                                     <div className={showPacksAmount ? classes.pagePopupBox__amountBox__icon_opened
                                         : classes.pagePopupBox__amountBox__icon}>
                                         <img src={Arrow} alt="" />
