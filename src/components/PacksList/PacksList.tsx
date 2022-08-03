@@ -18,6 +18,7 @@ import { useDebounce } from '../../common/Debounce/debounce';
 import { setUrlParamsAC } from "../../Store/urlParams-reducer";
 import { setCurrentPackDataAC } from "../../Store/packs-reducer";
 import { GiCoinsPile } from "react-icons/gi";
+import {BorderPopup} from "../Popup/Popup"
 
 
 
@@ -26,6 +27,7 @@ export const PacksList = () => {
 
     const [focusOnInput, setFocusOnInput] = useState<Boolean>(false)
     const [showPacksAmount, setShowPacksAmount] = useState<Boolean>(false)
+    const [showPopup,setShowPopup] = useState<Boolean>(false)
     const [inputValue, setInputValue] = useState<string>('')
     const listAmount = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     const { isInitialized, isLoggedIn } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
@@ -54,7 +56,6 @@ export const PacksList = () => {
     const exampleDeleteRequest = (packId: string) => () => {
         dispatch(setUrlParamsAC({ userId, sortPacks, packName, packPage, packPageCount, min, max }))
         dispatch(deletePackTC(packId))
-        // console.log({id})
     }
 
     const setFocusOnInputHandler = (value: boolean) => () => {
@@ -185,7 +186,9 @@ export const PacksList = () => {
                                         <div className={classes.table__string__created}>{pack.user_name}</div>
                                         <div className={classes.table__string__actions}>
                                             {pack.user_id == _id ?
-                                                <div onClick={exampleDeleteRequest(pack._id)}
+                                                <div 
+                                                // onClick={exampleDeleteRequest(pack._id)}
+                                                onClick={()=>setShowPopup(true)}
                                                     className={classes.table__string__actions__delete}>Delete</div> : null}
                                             {pack.user_id == _id ?
                                                 <div onClick={examplePutRequest({ _id: pack._id, name: 'Changed Name' })}
@@ -230,6 +233,7 @@ export const PacksList = () => {
                     </div> : <div className={classes.container__packsBox__emptyBox}>No packs found</div>}
                 </div>
             </div>
+            {!showPopup || <BorderPopup setShowPopup={setShowPopup}/>}
         </div>
 
 
