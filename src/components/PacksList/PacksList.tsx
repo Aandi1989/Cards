@@ -18,7 +18,7 @@ import { useDebounce } from '../../common/Debounce/debounce';
 import { setUrlParamsAC } from "../../Store/urlParams-reducer";
 import { setCurrentPackDataAC } from "../../Store/packs-reducer";
 import { GiCoinsPile } from "react-icons/gi";
-import {BorderPopup} from "../Popup/Popup"
+import {BorderPopup, DeletePopup} from "../Popup/Popup"
 
 
 
@@ -233,7 +233,7 @@ export const PacksList = () => {
                     </div> : <div className={classes.container__packsBox__emptyBox}>No packs found</div>}
                 </div>
             </div>
-            {!showPopup || <BorderPopup setShowPopup={setShowPopup}/>}
+            {showPopup && <DeletePopup setShowPopup={setShowPopup}/>}
         </div>
 
 

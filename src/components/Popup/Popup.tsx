@@ -11,3 +11,12 @@ export const BorderPopup=(props:any)=>{
         </div>
     )
 }
+
+export const DeletePopup=(props:any)=>{
+    return(
+        <BorderPopup setShowPopup={props.setShowPopup}>
+            <div>Hello</div>
+            <div>Bye!</div>
+        </BorderPopup>
+    )
+}
