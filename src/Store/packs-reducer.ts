@@ -40,6 +40,7 @@ export const getPacksTC = (data: GetPacksType) => (dispatch: Dispatch<ActionsTyp
     packsAPI.getPacks(data)
         .then(res => {
             // console.log(res)
+            console.log(data)
             if (res.status == 200) {
                 dispatch(setPacksDataAC(res.data))
                 dispatch(setAppStatusAC('succeeded'))

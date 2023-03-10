@@ -38,6 +38,7 @@ export const PacksList = () => {
     let params = Object.fromEntries(searchParams)
 
     let { userId, sortPacks='0updated', packName, packPage = 1, packPageCount = 10, min = minCardsCount, max = maxCardsCount } = params
+    console.log(userId)
     useEffect(() => {
         dispatch(getPacksTC({
             user_id: userId, sortPacks: sortPacks, packName: packName, page: packPage, pageCount: packPageCount,
